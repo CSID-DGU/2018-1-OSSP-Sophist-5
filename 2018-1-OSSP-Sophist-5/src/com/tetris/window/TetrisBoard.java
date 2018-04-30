@@ -43,9 +43,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private int minX=1, minY=0, maxX=10, maxY=21, down=50, up=0
 			// maxY = 게임화면 세로길이, maxX = 게임화면 가로 길이 
 			;
-	private final int MESSAGE_X = 2;
+	private final int MESSAGE_X = 2;//메시지창 위치 초기값?
 	private final int MESSAGE_WIDTH = BLOCK_SIZE * (7 + minX);
-	private final int MESSAGE_HEIGHT = BLOCK_SIZE * (6 + minY);
+	private final int MESSAGE_HEIGHT = BLOCK_SIZE * (6 + minY);//메시지 창의 크기?
 	private final int PANEL_WIDTH = maxX*BLOCK_SIZE + MESSAGE_WIDTH + BOARD_X;
 	private final int PANEL_HEIGHT = maxY*BLOCK_SIZE + MESSAGE_HEIGHT + BOARD_Y;
 	
@@ -56,7 +56,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private JCheckBox checkGhost = new JCheckBox("고스트모드",true);
 	private JCheckBox checkGrid  = new JCheckBox("격자 표시",true);
 	private Integer[] lv = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-	private JComboBox<Integer> comboSpeed = new JComboBox<Integer>(lv);
+	private JComboBox<Integer> comboSpeed = new JComboBox<Integer>(lv);//콤보에 대한 기능이 있는것같기도 하다.
 	
 	private String ip;
 	private int port;
@@ -352,7 +352,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * @param lineNumber	
 	 * @param num -1 or 1
 	 */
-	public void dropBoard(int lineNumber, int num){
+	public void dropBoard(int lineNumber, int num){//깨졌을 경우 보드를 내림
 		
 		// 맵을 떨어트린다.
 		this.dropMap(lineNumber,num);
@@ -476,7 +476,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				map[mainBlock.getY()][mainBlock.getX()] = mainBlock;
 
 			// 줄이 꽉 찼을 경우. 게임을 종료한다.
-			if (mainBlock.getY() == 1 && mainBlock.getX() > 2 && mainBlock.getX() < 7) {
+			if (mainBlock.getY() == 1 && mainBlock.getX() > 0 && mainBlock.getX() < 9) {
 				this.gameEndCallBack();
 				break;
 			}
@@ -704,7 +704,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}else if(e.getKeyCode() == KeyEvent.VK_DOWN){
 			controller.moveDown();
 		}else if(e.getKeyCode() == KeyEvent.VK_UP){
-			controller.nextRotationLeft();
+			controller.nextRotationLeft();///////////////////
 			controllerGhost.nextRotationLeft();
 		}else if(e.getKeyCode() == KeyEvent.VK_SPACE){
 			controller.moveQuickDown(shap.getPosY(), true);
