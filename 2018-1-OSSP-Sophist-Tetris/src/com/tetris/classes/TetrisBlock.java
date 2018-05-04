@@ -3,7 +3,7 @@ package com.tetris.classes;
 import java.awt.Color;
 import java.awt.Graphics;
 
-//��Ʈ���� ��
+//테트리스 블럭
 public abstract class TetrisBlock {
 	/* TetrisBlock Type*/
 	public static final int TYPE_CENTERUP = 0 ;
@@ -15,21 +15,21 @@ public abstract class TetrisBlock {
 	public static final int TYPE_RIGHTUP = 6 ;
 	
 	/* Rotation Index */
-	public static final int ROTATION_0 = 0;			//���� �����   0�� ȸ��
-	public static final int ROTATION_90 = 1;		//���� �����  90�� ȸ��
-	public static final int ROTATION_180 = 2;		//���� ����� 180�� ȸ��
-	public static final int ROTATION_270 = 3;		//���� ����� 270�� ȸ��
+	public static final int ROTATION_0 = 0;			//원래 모양의   0도 회전
+	public static final int ROTATION_90 = 1;		//원래 모양의  90도 회전
+	public static final int ROTATION_180 = 2;		//원래 모양의 180도 회전
+	public static final int ROTATION_270 = 3;		//원래 모양의 270도 회전
 	
 	/* Rotation Type */
-	public static final int ROTATION_LEFT = 1;		//�ð����ȸ��
-	public static final int ROTATION_RIGHT = -1;	//�ݽð����ȸ��
+	public static final int ROTATION_LEFT = 1;		//시계방향회전
+	public static final int ROTATION_RIGHT = -1;	//반시계방향회전
 	
-	/* �׿� �ʵ� */
-	protected int type;								//블록모양
-	protected Block[] colBlock= new Block[4];		//모양을 나타내는 4개 블럭
-	protected int rotation_index;					//블럭 회전 모양
-	protected int posX,posY;						//모양 좌표
-	protected Color color;							//색상
+	/* 그외 필드 */
+	protected int type;								//블럭모양;
+	protected Block[] colBlock= new Block[4];		//모양을 나타내는 4개블럭
+	protected int rotation_index;					//블럭회전 모양
+	protected int posX,posY;						//모양의 좌표
+	protected Color color;							//블록색상
 	
 	
 	
@@ -39,51 +39,54 @@ public abstract class TetrisBlock {
 		for(int i=0 ; i<colBlock.length ; i++){
 			colBlock[i] = new Block(0,0,color,ghostColor);
 		}
-		this.rotation(ROTATION_0); //�⺻ ȸ����� : 0��
+		this.rotation(ROTATION_0); //기본 회전모양 : 0도
 		this.setPosX(x);
 		this.setPosY(y);
 	}
 	
 	
 	/**
-	 * ��Ʈ���� ������� ȸ���Ѵ�. 
-	 * @param rotation_index : ȸ�����
+	 * 테트리스 블럭모양을 회전한다. 
+	 * @param rotation_index : 회전모양
 	 * ROTATION_0, ROTATION_90, ROTATION_180, ROTATION_270
 	 */
 	public abstract void rotation(int rotation_index);
 	
 	
-	/** 
-	57 	 * 테트리스 블럭모양을 왼쪽으로 이동시킨다. 
-	58 	 * @param addX : 이동양 
-	59 	 * 0이상의 값을 넣어야 한다. 
-	60 	 */ 
-
+	/**
+	 * 테트리스 블럭모양을 왼쪽으로 이동시킨다.
+	 * @param addX : 이동양
+	 * 0이상의 값을 넣어야 한다.
+	 */
 	public void moveLeft(int addX) {this.setPosX(this.getPosX()-addX);}
 	
 	
-		/** 
-	 	 * 테트리스 블럭모양을 오른쪽으로 이동시킨다. 
-	 	 * @param addX : 이동양 
-	 	 * 0이상의 값을 넣어야 한다. 
-	 	 */ 
-
+	/**
+	 * 테트리스 블럭모양을 오른쪽으로 이동시킨다.
+	 * @param addX : 이동양
+	 * 0이상의 값을 넣어야 한다.
+	 */
 	public void moveRight(int addX) {this.setPosX(this.getPosX()+addX);}
 	
-	/** 
- 	 * 테트리스 블럭모양을 아래로 이동시킨다. 
- 	 * @param addX : 이동양 
- 	 * 0이상의 값을 넣어야 한다. 
- 	 */ 
+	
+	/**
+	 * 테트리스 블럭모양을 아래로 이동시킨다.
+	 * @param addY : 이동양
+	 * 0이상의 값을 넣어야 한다.
+	 */
 	public void moveDown(int addY) {this.setPosY(this.getPosY()+addY);}
 	
 	
-/*
- * 테트리스블록은 graphics를 이용하여 그린다.
- */
+	/**
+	 * 테트리스 블럭을 Graphics를 이용하여 그린다.
+	 * @param g
+	 */
 	public void drawBlock(Graphics g){
 		for(Block col : colBlock){
-			if(col!=null)col.drawColorBlock(g);
+			if(col!=null) {col.drawColorBlock(g);
+
+			
+			}
 		}
 	}
 	

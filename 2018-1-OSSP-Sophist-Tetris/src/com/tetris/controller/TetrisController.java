@@ -11,16 +11,15 @@ public class TetrisController {
 	
 	private int maxX, maxY;
 	
-	/** 
-	15 	 * 테트리스 블럭을 조정하는 컨트롤러이다. 
-	16 	 *  
-	17 	 * @param block : 움직일 테트리스 블럭 
-	18 	 * @param minX : 블럭이 움직일 최소 GridX좌표 
-	19 	 * @param minY : 블럭이 움직일 최소 GridY좌표 
-	20 	 * @param maxX : 블럭이 움직일 최대 GridX좌표 
-	21 	 * @param maxY : 블럭이 움직일 최대 GridY좌표 
-	22 	 */ 
-
+	/**
+	 * 테트리스 블럭을 조정하는 컨트롤러이다.
+	 * 
+	 * @param block : 움직일 테트리스 블럭
+	 * @param minX : 블럭이 움직일 최소 GridX좌표
+	 * @param minY : 블럭이 움직일 최소 GridY좌표
+	 * @param maxX : 블럭이 움직일 최대 GridX좌표
+	 * @param maxY : 블럭이 움직일 최대 GridY좌표
+	 */
 	public TetrisController(TetrisBlock block, int maxX, int maxY, Block[][] map) {
 		this.block = block;
 		
@@ -33,21 +32,19 @@ public class TetrisController {
 	}
 	
 	
-	/** 
-	36 	 * 움직일 테트리스 블럭을 넘겨준다. 
-	37 	 * @param block 움직일 테트리스 블럭 
-	38 	 */ 
-
+	/**
+	 * 움직일 테트리스 블럭을 넘겨준다.
+	 * @param block 움직일 테트리스 블럭
+	 */
 	public void setBlock(TetrisBlock block){
 		this.block = block;
 		this.rotation_index = block.getRotationIndex();
 	}
 	
 	
-	/** 
-	46 	 * 블럭의 좌표를 출력한다. 
-	47 	 */ 
-
+	/**
+	 * 블럭의 좌표를 출력한다.
+	 */
 	public void showIndex(){
 		for(Block blocks : block.getBlock()){
 			if(blocks!=null)System.out.print("("+blocks.getX()+","+blocks.getY()+")");
@@ -57,10 +54,10 @@ public class TetrisController {
 	
 	
 	/**
-	 * ���� ��ǥ �����ȿ� �ִ��� Ȯ���Ѵ�.
+	 * 블럭의 좌표 범위안에 있는지 확인한다.
 	 * 
-	 * @param maxX : 블록이 움직일 수 있는 x좌표의 갯수
-	 * @param maxY : 블록이 움직일 수 있는 y좌표의 갯수
+	 * @param maxX : 블럭이 움직일 수 있는 GridX좌표 개수
+	 * @param maxY : 블럭이 움직일 수 있는 GridY좌표 개수
 	 * @return
 	 */
 	public boolean checkIndex(int maxX, int maxY){
@@ -78,31 +75,31 @@ public class TetrisController {
 	}
 	
 	/**
-	 * �������� �̵�
-	 * default 1ĭ
+	 * 왼쪽으로 이동
+	 * default 1칸
 	 */
 	public void moveLeft(){moveLeft(1);}
 	public void moveLeft(int x){
-		//�̵�
+		//이동
 		block.moveLeft(x);
 				
-		//üũ, ������ ����ٸ� ���󺹱�
+		//체크, 범위를 벗어났다면 원상복귀
 		if(!checkIndex(maxX,maxY)) {
 			block.moveLeft(-x);
 		}
 	}
 	
 	/**
-	 * ���������� �̵�
-	 * default 1ĭ
+	 * 오른쪽으로 이동
+	 * default 1칸
 	 */
 	public void moveRight(){moveRight(1);}
 	public void moveRight(int x){
-		// �̵�
+		// 이동
 		block.moveRight(x);
 		
 				
-		// üũ, ������ ����ٸ� ���󺹱�
+		// 체크, 범위를 벗어났다면 원상복귀
 		if (!checkIndex(maxX, maxY)) {
 			block.moveRight(-x);
 		}
@@ -110,16 +107,16 @@ public class TetrisController {
 	
 	
 	/**
-	 * �Ʒ��� �̵�
-	 * default 1ĭ
+	 * 아래로 이동
+	 * default 1칸
 	 */
 	public boolean moveDown(){return moveDown(1);}
 	public boolean moveDown(int y){
 		
 		boolean moved = true;
-		// �̵�
+		// 이동
 		block.moveDown(y);
-		//체크, 범위를 벗어났다면 원상복귀 
+		// 체크, 범위를 벗어났다면 원상복귀
 		if (!checkIndex(maxX, maxY)) {
 			block.moveDown(-y);
 			moved = false;
@@ -127,16 +124,17 @@ public class TetrisController {
 		return moved;
 	}
 	
-	 /* @param startY 현재 블럭의 위치 
-	 130 	 * @param moved 재귀함수에 필요한 인자로, 무조건 true로 한다. 
-	 131 	 * @return	moveQuickDown를 다시 호출한다. 
-	 132 	 */ 
-
+	/**
+	 * 
+	 * @param startY 현재 블럭의 위치
+	 * @param moved 재귀함수에 필요한 인자로, 무조건 true로 한다.
+	 * @return	moveQuickDown를 다시 호출한다.
+	 */
 	public boolean moveQuickDown(int startY, boolean moved){
 		
-		//이동
+		// 이동
 		block.moveDown(1);
-		// 체크, 범위를 벗어났다면 원상복귀		
+		// 체크, 범위를 벗어났다면 원상복귀
 		if (!checkIndex(maxX, maxY)) {
 			block.moveDown(-1);
 			if(moved) return false;
@@ -146,12 +144,11 @@ public class TetrisController {
 	
 	
 	
-	/** 
-	148 	 * 테트리스 블럭을 회전시킨다. 
-	149 	 * @param rotation_direction : 회전방향 
-	150 	 * TetrisBlock.ROTATION_LEFT(시계방향), TetrisBlock.ROTATION_RIGHT(반시계방향) 
-	151 	 */ 
-
+	/**
+	 * 테트리스 블럭을 회전시킨다.
+	 * @param rotation_direction : 회전방향
+	 * TetrisBlock.ROTATION_LEFT(시계방향), TetrisBlock.ROTATION_RIGHT(반시계방향)
+	 */
 	public void nextRotation(int rotation_direction){
 		if(rotation_direction == TetrisBlock.ROTATION_LEFT) 
 			this.nextRotationLeft();
@@ -160,18 +157,17 @@ public class TetrisController {
 	}
 	
 	
-	/** 
-	161 	 * 테트리스 블럭을 회전시킨다. (시계방향) 
-	162 	 * 만약 회전시 범위를 벗어나면, 회전을 하지 않는다. 
-	163 	 */ 
-
+	/**
+	 * 테트리스 블럭을 회전시킨다. (시계방향)
+	 * 만약 회전시 범위를 벗어나면, 회전을 하지 않는다.
+	 */
 	public void nextRotationLeft(){
-		//ȸ��
+		//회전
 		rotation_index++;
 		if(rotation_index == TetrisBlock.ROTATION_270+1) rotation_index = TetrisBlock.ROTATION_0;
 		block.rotation(rotation_index);
 		
-		//üũ, ������ ����ٸ� ���󺹱�
+		//체크, 범위를 벗어났다면 원상복귀
 		if(!checkIndex(maxX,maxY)) {
 			rotation_index--;
 			if(rotation_index == TetrisBlock.ROTATION_0-1) rotation_index = TetrisBlock.ROTATION_270;
@@ -181,16 +177,16 @@ public class TetrisController {
 	
 	
 	/**
-	 * ��Ʈ���� ���� ȸ����Ų��. (�ݽð����)
-	 * ���� ȸ���� ������ �����, ȸ���� ���� �ʴ´�.
+	 * 테트리스 블럭을 회전시킨다. (반시계방향)
+	 * 만약 회전시 범위를 벗어나면, 회전을 하지 않는다.
 	 */
 	public void nextRotationRight(){
-		//ȸ��
+		//회전
 		rotation_index--;
 		if(rotation_index == TetrisBlock.ROTATION_0-1) rotation_index = TetrisBlock.ROTATION_270;
 		block.rotation(rotation_index);
 		
-		//üũ, ������ ����ٸ� ���󺹱�
+		//체크, 범위를 벗어났다면 원상복귀
 		if(!checkIndex(maxX,maxY)) {
 			rotation_index++;
 			if(rotation_index == TetrisBlock.ROTATION_270+1) rotation_index = TetrisBlock.ROTATION_0;

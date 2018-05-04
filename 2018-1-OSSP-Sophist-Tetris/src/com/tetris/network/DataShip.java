@@ -5,11 +5,11 @@ import java.io.*;
 public class DataShip implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	public static final int CLOSE_NETWORK = 0;	
-	public static final int EXIT = 1;			
-	public static final int SERVER_EXIT = 2;	
-	public static final int PRINT_SYSTEM_OPEN_MESSAGE = 3;	
-	public static final int PRINT_SYSTEM_ADDMEMBER_MESSAGE = 4;	
+	public static final int CLOSE_NETWORK = 0;	//서버와 연결을 끊음.
+	public static final int EXIT = 1;			//프로그램종료
+	public static final int SERVER_EXIT = 2;	//서버가 종료될 경우
+	public static final int PRINT_SYSTEM_OPEN_MESSAGE = 3;	//리스트 이름 받아오기.
+	public static final int PRINT_SYSTEM_ADDMEMBER_MESSAGE = 4;	//그 이후 들어오는 사람.
 	public static final int GAME_START = 5;
 	public static final int GAME_OVER = 6;
 	public static final int ADD_BLOCK = 7;
@@ -29,7 +29,6 @@ public class DataShip implements Serializable{
 	private boolean isPlay;
 	private int totalAdd;
 	private int speed;
-	
 	
 
 	public DataShip(){}

@@ -16,13 +16,12 @@ public class Block {
 	private boolean ghost;
 	
 	
-	/** 
-	20 	 *  
-	21 	 * @param fixGridX : 사각형 고정 X 그리드좌표 
-	22 	 * @param fixGridY : 사각형 고정 Y 그리드좌표 
-	23 	 * @param color : 사각형 색상 
-	24 	 */ 
-
+	/**
+	 * 
+	 * @param fixGridX : 사각형 고정 X 그리드좌표
+	 * @param fixGridY : 사각형 고정 Y 그리드좌표
+	 * @param color : 사각형 색상
+	 */
 	public Block(int fixGridX, int fixGridY, Color color, Color ghostColor) {
 		this.fixGridX = fixGridX;
 		this.fixGridY = fixGridY;
@@ -31,15 +30,14 @@ public class Block {
 	}
 	
 
-	/** 
-	34 	 * 사각형을 그려준다. 
-	35 	 * @param g 
-	36 	 */ 
-
-	 
+	/**
+	 * 사각형을 그려준다.
+	 * @param g
+	 */
 	public void drawColorBlock(Graphics g){
 		if(ghost)g.setColor(ghostColor);
 		else g.setColor(color);
+		//칸 테투리그림
 		g.fillRect((fixGridX+posGridX)*size + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size + TetrisBoard.BOARD_Y, width, height);
 		g.setColor(Color.BLACK);
 		g.drawRect((fixGridX+posGridX)*size + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size + TetrisBoard.BOARD_Y, width, height);
@@ -47,24 +45,23 @@ public class Block {
 		g.drawLine((fixGridX+posGridX)*size + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size+height + TetrisBoard.BOARD_Y, (fixGridX+posGridX)*size+width + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size + TetrisBoard.BOARD_Y);
 		if(ghost)g.setColor(ghostColor);
 		else g.setColor(color);
+		//네모칸으로 채우기 x대신
 		g.fillRect((fixGridX+posGridX)*size+gap + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size+gap + TetrisBoard.BOARD_Y, width-gap*2, height-gap*2);
 		g.setColor(Color.BLACK);
 		g.drawRect((fixGridX+posGridX)*size+gap + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size+gap + TetrisBoard.BOARD_Y, width-gap*2, height-gap*2);
 	}
 	
-	 /** 
-	 53 	 * 현재 블럭의 절대좌표를 보여준다. 
-	 54 	 * @return 현재블럭의 X절대좌표 
-	 55 	 */ 
-
+	/**
+	 * 현재 블럭의 절대좌표를 보여준다.
+	 * @return 현재블럭의 X절대좌표
+	 */
 	public int getX(){return posGridX + fixGridX;}	
 	
 	
-	/** 
-	53 	 * 현재 블럭의 절대좌표를 보여준다. 
-	54 	 * @return 현재블럭의 Y절대좌표 
-	55 	 */ 
-
+	/**
+	 * 현재 블럭의 절대좌표를 보여준다.
+	 * @return 현재블럭의 Y절대좌표
+	 */
 	public int getY(){return posGridY + fixGridY;}
 
 	
