@@ -9,41 +9,41 @@ import java.net.UnknownHostException;
 
 import com.tetris.window.Tetris;
 
-//---------------------[ Ŭ���̾�Ʈ ]---------------------
+//---------------------[ 클라이언트 ]---------------------
 public class GameClient implements Runnable{
 	private Tetris tetris;
 	private Socket socket;
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 
-	//���� IP
+	//서버 IP
 	private String ip;
 	private int port;
 	private String name;
 	private int index;
 	private boolean isPlay;
 	
-	//������
+	//생성자
 	public GameClient(Tetris tetris,String ip, int port, String name){
 		this.tetris = tetris;
 		this.ip = ip;
 		this.port = port;
 		this.name = name;
+		
 	}//GameClient()
 
 	public boolean start(){
 		return this.execute();	
 	}
 
-	//���� & IO ó��
-	//객체 직렬화를 통한 socket통신 예제
+	//소켓 & IO 처리
 	public boolean execute(){
 		try{
-			socket = new Socket(ip,port); //서버에 요청보내기
-			ip = InetAddress.getLocalHost().getHostAddress(); // ip를 받아오고 
-			oos = new ObjectOutputStream(socket.getOutputStream()); //socket의 outputstream을 보내기위한 stream
-			ois = new ObjectInputStream(socket.getInputStream()); // socket을 통해 들어오는 inputstream을 읽기 위한 stream 
-			System.out.println("Ŭ���̾�Ʈ�� ���� ���Դϴ�.");
+			socket = new Socket(ip,port);
+			ip = InetAddress.getLocalHost().getHostAddress();
+			oos = new ObjectOutputStream(socket.getOutputStream());
+			ois = new ObjectInputStream(socket.getInputStream());
+			System.out.println("클라이언트가 실행 중입니다.");
 		}catch(UnknownHostException e){
 			e.printStackTrace();
 			return false;
@@ -52,21 +52,21 @@ public class GameClient implements Runnable{
 			return false;
 		}
 
-		tetris.getBoard().clearMessage(); //연결이 된 뒤 메시지창 클리어 
+		tetris.getBoard().clearMessage();
 		
-		//�̸�������
-		DataShip data = new DataShip(); 
+		//이름보내기
+		DataShip data = new DataShip();
 		data.setIp(ip);
 		data.setName(name);
 		send(data);
 		
-		//����Ʈ�޾ƿ���
+		//리스트받아오기
 		printSystemMessage(DataShip.PRINT_SYSTEM_OPEN_MESSAGE);
-		//����Ʈ�� �߰��ϱ�
+		//리스트에 추가하기
 		printSystemMessage(DataShip.PRINT_SYSTEM_ADDMEMBER_MESSAGE);
-		//�ε����޾ƿ���
+		//인덱스받아오기
 		setIndex();
-		//������
+		//스레드
 		Thread t = new Thread(this);
 		t.start();
 		
@@ -74,7 +74,7 @@ public class GameClient implements Runnable{
 	}//execute()
 
 	
-	//Run : ������ ����� ��ٸ�.
+	//Run : 서버의 명령을 기다림.
 	public void run(){
 		DataShip data = null;
 		while(true){
@@ -84,10 +84,10 @@ public class GameClient implements Runnable{
 			}catch(ClassNotFoundException e){e.printStackTrace();}
 
 
-			//�����κ��� DataShip Object�� �޾ƿ�.
+			//서버로부터 DataShip Object를 받아옴.
 			if(data == null) continue;
 			if(data.getCommand() == DataShip.CLOSE_NETWORK){
-				reCloseNetwork(); //
+				reCloseNetwork();
 				break;
 			}else if(data.getCommand() == DataShip.SERVER_EXIT){
 				closeNetwork(false);
@@ -115,10 +115,10 @@ public class GameClient implements Runnable{
 	}//run()
 
 
-	// �������� ��û��
+	// 서버에게 요청함
 	public void send(DataShip data){
 		try{
-			oos.writeObject(data); //outputstream을 통해 데이터 전송 
+			oos.writeObject(data); 
 			oos.flush();
 		}catch(IOException e){
 			e.printStackTrace();
@@ -129,16 +129,13 @@ public class GameClient implements Runnable{
 	
 	
 	
-	//��û�ϱ� : �������
+	//요청하기 : 연결끊기
 	public void closeNetwork(boolean isServer){
 		DataShip data = new DataShip(DataShip.CLOSE_NETWORK);
-		if(isServer) data.setCommand(DataShip.SERVER_EXIT); 
-				//SERVER_EXIT메세지가 전송되면 closenetwork(false로 전송됨)
-				// data에 CLOSE_NETWORK 전송됨
+		if(isServer) data.setCommand(DataShip.SERVER_EXIT);
 		send(data);
-				
 	}
-	//소켓, 스트림 닫음 
+	//실행하기 : 연결끊기
 	public void reCloseNetwork(){
 
 		tetris.closeNetwork();
@@ -151,24 +148,24 @@ public class GameClient implements Runnable{
 		}
 	}
 	
-	//��û�ϱ� : ���ӽ���
+	//요청하기 : 게임시작
 	public void gameStart(int speed){
 		DataShip data = new DataShip(DataShip.GAME_START);
 		data.setSpeed(speed);
 		send(data);
 	}
-	//�����ϱ� : ���ӽ���
+	//실행하기 : 게임시작
 	public void reGameStart(boolean isPlay, String msg, int speed){
 		this.isPlay = isPlay;
 		tetris.gameStart(speed);
 		rePrintSystemMessage(msg);
 	}
-	//��û�ϱ� : �޽���
+	//요청하기 : 메시지
 	public void printSystemMessage(int cmd){
 		DataShip data = new DataShip(cmd);
 		send(data);
 	}
-	//�����ϱ� : �޽���
+	//실행하기 : 메시지
 	public void rePrintSystemMessage(String msg){
 		tetris.printSystemMessage(msg);
 	}
@@ -191,7 +188,7 @@ public class GameClient implements Runnable{
 		this.index = index;
 	}
 	
-	//��û�ϱ� : ��������
+	//요청하기 : 게임종료
 	public void gameover(){
 		DataShip data = new DataShip(DataShip.GAME_OVER);
 		send(data);
