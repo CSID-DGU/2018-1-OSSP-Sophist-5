@@ -37,17 +37,17 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private Tetris tetris;
 	private GameClient client;
 
-	public static final int BLOCK_SIZE = 20; //20
+	public static final int BLOCK_SIZE = 20;
 	public static final int BOARD_X = 120;
 	public static final int BOARD_Y = 50;
 	private int minX=1, minY=0, maxX=10, maxY=21, down=50, up=0
 			// maxY = 게임화면 세로길이, maxX = 게임화면 가로 길이 
 			;
-	private final int MESSAGE_X = 2;
+	private final int MESSAGE_X = 2;//메시지창 위치 초기값?
 	private final int MESSAGE_WIDTH = BLOCK_SIZE * (7 + minX);
-	private final int MESSAGE_HEIGHT = BLOCK_SIZE * (6 + minY);
-	private final int PANEL_WIDTH = (maxX*BLOCK_SIZE + MESSAGE_WIDTH + BOARD_X);
-	private final int PANEL_HEIGHT = (maxY*BLOCK_SIZE + MESSAGE_HEIGHT + BOARD_Y);
+	private final int MESSAGE_HEIGHT = BLOCK_SIZE * (6 + minY);//메시지 창의 크기?
+	private final int PANEL_WIDTH = maxX*BLOCK_SIZE + MESSAGE_WIDTH + BOARD_X;
+	private final int PANEL_HEIGHT = maxY*BLOCK_SIZE + MESSAGE_HEIGHT + BOARD_Y;
 	
 	private SystemMessageArea systemMsg = new SystemMessageArea(BLOCK_SIZE*1,BOARD_Y + BLOCK_SIZE + BLOCK_SIZE*7, BLOCK_SIZE*5, BLOCK_SIZE*12);
 	private MessageArea messageArea = new MessageArea(this,2, PANEL_HEIGHT - (MESSAGE_HEIGHT-MESSAGE_X), PANEL_WIDTH-BLOCK_SIZE*7-2, MESSAGE_HEIGHT-2);
@@ -56,7 +56,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private JCheckBox checkGhost = new JCheckBox("고스트모드",true);
 	private JCheckBox checkGrid  = new JCheckBox("격자 표시",true);
 	private Integer[] lv = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-	public JComboBox<Integer> comboSpeed = new JComboBox<Integer>(lv);
+	private JComboBox<Integer> comboSpeed = new JComboBox<Integer>(lv);//콤보에 대한 기능이 있는것같기도 하다.
 	
 	private String ip;
 	private int port;
@@ -297,7 +297,6 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	
 	@Override
 	public void run() {
-		
 		int countMove = (21-(int)comboSpeed.getSelectedItem())*5; 
 		//블록을 내려보냄
 		//countMove가 작아질수록 moveDown 실행 
@@ -310,9 +309,6 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		int countUp = up; 
 		
 		while(isPlay){
-			if(tetris.isServer()) {
-				comboSpeed.setEnabled(false);
-			}
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -348,9 +344,6 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			
 			this.repaint();
 		}//while()
-		if(tetris.isServer()) {
-			comboSpeed.setEnabled(true);
-		}
 	}//run()
 
 	
@@ -359,7 +352,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * @param lineNumber	
 	 * @param num -1 or 1
 	 */
-	public void dropBoard(int lineNumber, int num){
+	public void dropBoard(int lineNumber, int num){//깨졌을 경우 보드를 내림
 		
 		// 맵을 떨어트린다.
 		this.dropMap(lineNumber,num);
@@ -443,7 +436,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		removeLineCount = 0;
 		
 		// drawList 추가
-		for (Block block : shap.getBlock()) { //실질적으로 내리면 그리는 부분
+		for (Block block : shap.getBlock()) {
 			blockList.add(block);
 		}
 		
@@ -483,7 +476,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				map[mainBlock.getY()][mainBlock.getX()] = mainBlock;
 
 			// 줄이 꽉 찼을 경우. 게임을 종료한다.
-			if (mainBlock.getY() == 1 && mainBlock.getX() > 2 && mainBlock.getX() < 9) {
+			if (mainBlock.getY() == 1 && mainBlock.getX() > 0 && mainBlock.getX() < 9) {
 				this.gameEndCallBack();
 				break;
 			}
@@ -711,7 +704,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}else if(e.getKeyCode() == KeyEvent.VK_DOWN){
 			controller.moveDown();
 		}else if(e.getKeyCode() == KeyEvent.VK_UP){
-			controller.nextRotationLeft();
+			controller.nextRotationLeft();///////////////////
 			controllerGhost.nextRotationLeft();
 		}else if(e.getKeyCode() == KeyEvent.VK_SPACE){
 			controller.moveQuickDown(shap.getPosY(), true);
@@ -739,7 +732,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		if(e.getSource() == btnStart){
 			if(client!=null){
 				client.gameStart((int)comboSpeed.getSelectedItem());
-			}else{			
+			}else{
 				this.gameStart((int)comboSpeed.getSelectedItem());
 			}
 		}else if(e.getSource() == btnExit){
