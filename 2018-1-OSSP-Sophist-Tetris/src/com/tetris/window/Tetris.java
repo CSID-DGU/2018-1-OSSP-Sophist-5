@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -67,6 +68,10 @@ public class Tetris extends JFrame implements ActionListener{
 			}
 			
 		});
+	
+		String path = Tetris.class.getResource("").getPath();
+		File file = new File(path + "BGM.wav");
+		board.playSound(file, true);
 		
 	}
 
@@ -76,13 +81,13 @@ public class Tetris extends JFrame implements ActionListener{
 		String ip=null;
 		int port=0;
 		String nickName=null;
-		if(e.getSource() == itemServerStart){
+		if(e.getSource() == itemServerStart){ //is started as a server, START BUTTON ENABLE.
 			
 			String sp = JOptionPane.showInputDialog("port번호를 입력해주세요","9500");
 			if(sp!=null && !sp.equals(""))port = Integer.parseInt(sp);
 			nickName = JOptionPane.showInputDialog("닉네임을 입력해주세요","이름없음");
 			
-			if(port!=0){
+			if(port!=0){ 
 				if(server == null) server = new GameServer(port);
 				server.startServer();
 				try {ip = InetAddress.getLocalHost().getHostAddress();
@@ -100,7 +105,7 @@ public class Tetris extends JFrame implements ActionListener{
 					}
 				}
 			}
-		}else if(e.getSource() == itemClientStart){
+		}else if(e.getSource() == itemClientStart){ //if started as a client, NO STARTBTN OPTION AVAILABLE
 			try {
 				ip = InetAddress.getLocalHost().getHostAddress();
 			} catch (UnknownHostException e1) {
@@ -135,6 +140,8 @@ public class Tetris extends JFrame implements ActionListener{
 		board.setPlay(false);
 		board.setClient(null);
 	}
+	
+	
 
 	public JMenuItem getItemServerStart() {return itemServerStart;}
 	public JMenuItem getItemClientStart() {return itemClientStart;}

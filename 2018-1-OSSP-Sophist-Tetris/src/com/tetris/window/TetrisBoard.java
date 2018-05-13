@@ -10,8 +10,21 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.Line.Info;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -145,18 +158,20 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 */
 	
 	public void gameStart(int speed){
-		comboSpeed.setSelectedItem(new Integer(speed));
+		comboSpeed.setSelectedItem(speed);
 		//작업쓰레드가 돌고있다면 (핸들러=클라이언트가 있다면)
 		// isPlas = false, thread.join()을 통해 실행중인 쓰레드를 멈춘다
 		if(th!=null){
 			try {isPlay = false;th.join();} 
 			catch (InterruptedException e) {e.printStackTrace();}
 		}
-		
+		/******************************************************************/
+		/******************************************************************/
 		//맵셋팅
 		map = new Block[maxY][maxX]; //게임화면
 		blockList = new ArrayList<Block>();
 		nextBlocks = new ArrayList<TetrisBlock>();
+		
 		
 		//도형셋팅
 		shap = getRandomTetrisBlock(); // 도형을 받아옴
@@ -169,7 +184,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		for(int i=0 ; i<5 ; i++){
 			nextBlocks.add(getRandomTetrisBlock());
 		}
-		
+		/******************************************************************/
+		/******************************************************************/
 		//스레드 셋팅
 		isPlay = true;
 		th = new Thread(this);
@@ -309,7 +325,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		
 		int countUp = up; 
 		
+		/******************************************************************/
+		/*************************** 게임 ing 상태 **************************/
 		while(isPlay){
+			/*
+				이벤트마다 사운드 추가하기
+			 */
 			if(tetris.isServer()) {
 				comboSpeed.setEnabled(false);
 			}
@@ -352,6 +373,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			comboSpeed.setEnabled(true);
 		}
 	}//run()
+		/******************************************************************/
 
 	
 	/**
@@ -716,7 +738,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}else if(e.getKeyCode() == KeyEvent.VK_SPACE){
 			controller.moveQuickDown(shap.getPosY(), true);
 			this.fixingTetrisBlock();
-		}else if(e.getKeyCode() == KeyEvent.VK_SHIFT){ 
+		}else if(e.getKeyCode() == KeyEvent.VK_SHIFT){ https://github.com/CSID-DGU/2018-1-OSSP-Sophist-5.gitc
 			playBlockHold();
 		}
 		this.showGhost();
@@ -735,8 +757,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	
 	
 
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnStart){
+	public void actionPerformed(ActionEvent e) { 
+		if(e.getSource() == btnStart){ //if btnStart clicked, start tetris 
 			if(client!=null){
 				client.gameStart((int)comboSpeed.getSelectedItem());
 			}else{			
@@ -759,6 +781,34 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			
 		}
 	}
+	
+	///////////////// 배경음 추가 //////////
+	
+public void playSound(File file, boolean loop) {
+	try {
+		AudioInputStream ais = AudioSystem.getAudioInputStream(file);
+		AudioFormat af = ais.getFormat();		
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class, af);
+		SourceDataLine sdl = (SourceDataLine)AudioSystem.getLine(info);
+		sdl.open();
+		sdl.start();
+		byte[] buffer = new byte[128000];
+		int i;
+		while(loop) {
+			i=ais.read(buffer, 0, buffer.length);
+			if(i == -1)
+				break;
+			sdl.write(buffer, 0, i);
+		}
+	}catch(Exception e) {
+		e.printStackTrace();
+	}
+	
+}
+	
+
+/* 사운드 추가 */
+
 
 	public boolean isPlay(){return isPlay;}
 	public void setPlay(boolean isPlay){this.isPlay = isPlay;}
@@ -773,5 +823,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		messageArea.clearMessage();
 		systemMsg.clearMessage();
 	}
-
+	
+	
+	
 }
