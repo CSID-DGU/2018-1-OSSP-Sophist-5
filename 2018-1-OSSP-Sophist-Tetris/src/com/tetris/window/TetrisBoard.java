@@ -68,6 +68,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private JButton btnExit = new JButton("나가기");
 	private JCheckBox checkGhost = new JCheckBox("고스트모드",true);
 	private JCheckBox checkGrid  = new JCheckBox("격자 표시",true);
+	private JCheckBox checktimemod = new JCheckBox("타임어택", true);
 	private Integer[] lv = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 	public JComboBox<Integer> comboSpeed = new JComboBox<Integer>(lv);
 	
@@ -131,6 +132,16 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				TetrisBoard.this.repaint();
 			}
 		});
+		checktimemod.setBounds(PANEL_WIDTH - BLOCK_SIZE*10,25,100,20);
+		checktimemod.setBackground(new Color(0,87,102));
+		checktimemod.setForeground(Color.WHITE);
+		checktimemod.setFont(new Font("굴림", Font.BOLD,13));
+		checktimemod.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				//여기다가 이제 모드기능 추가
+			}
+		});
 		comboSpeed.setBounds(PANEL_WIDTH - BLOCK_SIZE*8, 5, 45, 20);
 		this.add(comboSpeed);
 		
@@ -140,6 +151,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		this.add(btnExit);
 		this.add(checkGhost);
 		this.add(checkGrid);
+		this.add(checktimemod);
+		
 	}
 	
 	/*********************************************************************************************************************
