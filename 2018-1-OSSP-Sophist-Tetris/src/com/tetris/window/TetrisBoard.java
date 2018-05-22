@@ -29,6 +29,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -60,9 +61,10 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private final int MESSAGE_WIDTH = BLOCK_SIZE * (7 + minX);
 	private final int MESSAGE_HEIGHT = BLOCK_SIZE * (6 + minY);
 	private final int PANEL_WIDTH = (maxX*BLOCK_SIZE + MESSAGE_WIDTH + BOARD_X);
-	private final int PANEL_HEIGHT = (maxY*BLOCK_SIZE + MESSAGE_HEIGHT + BOARD_Y);
+	private final int PANEL_HEIGHT = (maxY*BLOCK_SIZE + MESSAGE_HEIGHT  + BOARD_Y);
 	
-	private SystemMessageArea systemMsg = new SystemMessageArea(BLOCK_SIZE*1,BOARD_Y + BLOCK_SIZE + BLOCK_SIZE*7, BLOCK_SIZE*5, BLOCK_SIZE*12);
+	
+	private SystemMessageArea systemMsg = new SystemMessageArea(BLOCK_SIZE*1,BOARD_Y + BLOCK_SIZE + BLOCK_SIZE*9, BLOCK_SIZE*5, BLOCK_SIZE*9);
 	private MessageArea messageArea = new MessageArea(this,2, PANEL_HEIGHT - (MESSAGE_HEIGHT-MESSAGE_X), PANEL_WIDTH-BLOCK_SIZE*7-2, MESSAGE_HEIGHT-2);
 	private JButton btnStart = new JButton("시작하기");
 	private JButton btnExit = new JButton("나가기");
@@ -70,6 +72,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private JCheckBox checkGrid  = new JCheckBox("격자 표시",true);
 	private JCheckBox checktimemod = new JCheckBox("타임어택", true);
 	private Integer[] lv = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+	
+	public JLabel time = new JLabel("60:00");
 	public JComboBox<Integer> comboSpeed = new JComboBox<Integer>(lv);
 	
 	private String ip;
@@ -139,12 +143,25 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		checktimemod.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				//여기다가 이제 모드기능 추가
+				if(checktimemod.isSelected()) {
+					time.setVisible(true);
+					TetrisBoard.this.setRequestFocusEnabled(true);
+					TetrisBoard.this.repaint();
+				}
+				else {
+					time.setVisible(false);
+					TetrisBoard.this.setRequestFocusEnabled(true);
+					TetrisBoard.this.repaint();
+				}
 			}
 		});
-		comboSpeed.setBounds(PANEL_WIDTH - BLOCK_SIZE*8, 5, 45, 20);
-		this.add(comboSpeed);
+		time.setBounds(BLOCK_SIZE*1,BOARD_Y + BLOCK_SIZE + BLOCK_SIZE*6, BLOCK_SIZE*5, BLOCK_SIZE*3);
+		time.setForeground(Color.black);	
+		time.setFont(new Font("Agency FB", Font.BOLD,48));
 		
+		comboSpeed.setBounds(PANEL_WIDTH - BLOCK_SIZE*8, 5, 45, 20);
+		this.add(time);
+		this.add(comboSpeed);
 		this.add(systemMsg);
 		this.add(messageArea);
 		this.add(btnStart);		
