@@ -236,11 +236,11 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		if(end_t == 0 && start_t == 0) {
 			time.setText("60:00");
 		}
-		else if((end_t - start_t)/1000 < play_time && 60-(end_t-start_t)/1000 >= 10) {
-		time.setText(Long.toString(60-(end_t - start_t)/1000) + ":" + Long.toString(9-(end_t - start_t)%1000/100) + Long.toString(9-(end_t - start_t)%100/10));
+		else if((end_t - start_t)/1000 < play_time && 59-(end_t-start_t)/1000 >= 10) {
+		time.setText(Long.toString(59-(end_t - start_t)/1000) + ":" + Long.toString(9-(end_t - start_t)%1000/100) + Long.toString(9-(end_t - start_t)%100/10));
 		}
-		else if((end_t - start_t)/1000 < play_time && 60-(end_t-start_t)/1000 < 10){
-		time.setText("0" + Long.toString(60-(end_t - start_t)/1000) + ":" + Long.toString(9-(end_t - start_t)%1000/100) + Long.toString(9-(end_t - start_t)%100/10));
+		else if((end_t - start_t)/1000 < play_time && 59-(end_t-start_t)/1000 < 10){
+		time.setText("0" + Long.toString(59-(end_t - start_t)/1000) + ":" + Long.toString(9-(end_t - start_t)%1000/100) + Long.toString(9-(end_t - start_t)%100/10));
 				
 		}
 		else {
