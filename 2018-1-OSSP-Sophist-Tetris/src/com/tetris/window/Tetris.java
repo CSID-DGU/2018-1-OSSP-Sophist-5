@@ -47,7 +47,8 @@ public class Tetris extends JFrame implements ActionListener{
 		this.setResizable(false);
 		this.pack();
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation((size.width-this.getWidth()/2),(size.height-this.getHeight()/2));
+		//프로그램 생성위치
+		this.setLocation((size.width-this.getWidth()*3/2),(size.height-this.getHeight()*3/2));
 		this.setVisible(true);
 		
 		itemServerStart.addActionListener(this);
