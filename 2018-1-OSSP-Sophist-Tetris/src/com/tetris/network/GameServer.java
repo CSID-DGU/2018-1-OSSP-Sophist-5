@@ -28,11 +28,7 @@ class GameHandler extends Thread{
 	
 	public GameHandler(Socket socket,ArrayList<GameHandler> list, int index, ArrayList<Integer> indexList){
 		this.index = index;
-		// 접속한 유저의 인덱스 
-		
 		this.indexList = indexList;
-		// 접속 유저마다의 인덱스를 저장하는 리스트 
-	
 		this.socket = socket;
 		this.list = list;
 		try{

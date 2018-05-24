@@ -174,15 +174,10 @@ public class GameClient implements Runnable{
 		data.setNumOfBlock(numOfBlock);
 		send(data);
 	}
-	
-	//
-	//
 	public void reAddBlock(String msg, int numOfBlock, int index){
 		if(index != this.index)tetris.getBoard().addBlockLine(numOfBlock);
 		rePrintSystemMessage(msg);
 	}
-	//
-	//
 	
 	
 	public void setIndex(){
