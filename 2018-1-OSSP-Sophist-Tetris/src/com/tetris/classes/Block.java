@@ -11,7 +11,7 @@ public class Block {
 	private int gap = 3;
 	private int fixGridX, fixGridY;
 	private int posGridX, posGridY;
-	private Color color;
+	public Color color;
 	private Color ghostColor;	
 	private boolean ghost;
 	

@@ -5,6 +5,8 @@ import java.awt.Graphics;
 
 //테트리스 블럭
 public abstract class TetrisBlock {
+	
+	public static int MODE_NUM = 0; //0일때는 item블럭을 생성, 1일때는 생성하지 않음
 	/* TetrisBlock Type*/
 	public static final int TYPE_CENTERUP = 0 ;
 	public static final int TYPE_LEFTTWOUP = 1 ;
@@ -36,8 +38,20 @@ public abstract class TetrisBlock {
 	
 	public TetrisBlock(int x, int y, Color color, Color ghostColor) {
 		this.color = color;
+		Color item = new Color(153,0,0);
+		int random = (int)(Math.random()*20);//아이템이 나올 확률을 조정.
 		for(int i=0 ; i<colBlock.length ; i++){
-			colBlock[i] = new Block(0,0,color,ghostColor);
+			if(MODE_NUM == 0) {//아이템을 사용할 때
+				if(i == random) {
+				colBlock[i] = new Block(0,0,item,ghostColor);
+				}
+				else {
+				colBlock[i] = new Block(0,0,color,ghostColor);
+				}
+			}
+			else if(MODE_NUM == 1){//아이템을 사용하지 않을 때
+				colBlock[i] = new Block(0,0,color,ghostColor);
+			}
 		}
 		this.rotation(ROTATION_0); //기본 회전모양 : 0도
 		this.setPosX(x);

@@ -178,7 +178,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		});
 		time.setBounds(BLOCK_SIZE*1,BOARD_Y + BLOCK_SIZE + BLOCK_SIZE*6, BLOCK_SIZE*5, BLOCK_SIZE*3);
 		time.setForeground(Color.black);	
-		time.setFont(new Font("Agency FB", Font.BOLD,46));
+		time.setFont(new Font("Agency FB", Font.BOLD,30));//글씨크기가 커지면 보이지 않을 수 있으니 주의
 		
 		comboSpeed.setBounds(PANEL_WIDTH - BLOCK_SIZE*8, 5, 45, 20);
 		this.add(time);
@@ -713,8 +713,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		for (int j = 0; j < maxX ; j++) {
 			for (int s = 0; s < blockList.size(); s++) {
 				Block b = blockList.get(s);
-				if (b == map[lineNumber][j])
+				if (b == map[lineNumber][j]) {
+					if(map[lineNumber][j].color.equals(new Color(153,0,0))) {
+						System.out.println("아이템터짐");//@@@ 이 부분에 아이템 메소드를 집어넣으면 됩니다.
+					}
 					blockList.remove(s);
+				}
 			}
 			map[lineNumber][j] = null;
 		}// for(j)
