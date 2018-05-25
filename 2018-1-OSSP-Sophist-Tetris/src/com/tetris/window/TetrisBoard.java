@@ -402,6 +402,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	@Override
 	public void run() {
 		if(mode_number == 1) {
+			time.setVisible(true);
 			start_t = System.currentTimeMillis();
 		 		if(start_time_record == 0) {
 		 			start_time_record = start_t;
