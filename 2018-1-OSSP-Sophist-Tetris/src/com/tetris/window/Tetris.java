@@ -127,6 +127,7 @@ public class Tetris extends JFrame implements ActionListener{
 					itemServerStart.setEnabled(false);
 					itemClientStart.setEnabled(false);
 					board.comboSpeed.setEnabled(false);
+					board.checktimemod.setEnabled(false); //클라는 모드 선택 x
 					board.setClient(client);
 					board.startNetworking(ip, port, nickName);
 					isNetwork = true;
@@ -149,7 +150,7 @@ public class Tetris extends JFrame implements ActionListener{
 	public JMenuItem getItemServerStart() {return itemServerStart;}
 	public JMenuItem getItemClientStart() {return itemClientStart;}
 	public TetrisBoard getBoard(){return board;}
-	public void gameStart(int speed){board.gameStart(speed);}
+	public void gameStart(int speed, int mode){board.gameStart(speed, mode);}
 	public boolean isNetwork() {return isNetwork;}
 	public void setNetwork(boolean isNetwork) {this.isNetwork = isNetwork;}
 	public void printSystemMessage(String msg){board.printSystemMessage(msg);}

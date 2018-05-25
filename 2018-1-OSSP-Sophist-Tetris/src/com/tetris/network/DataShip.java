@@ -17,6 +17,7 @@ public class DataShip implements Serializable{
 	public static final int PRINT_MESSAGE = 9;
 	public static final int PRINT_SYSTEM_MESSAGE=10;
 	public static final int GAME_WIN=11;
+	public static final int GAME_MODE=12;
 	
 	
 	private int cmd = -1;
@@ -29,7 +30,7 @@ public class DataShip implements Serializable{
 	private boolean isPlay;
 	private int totalAdd;
 	private int speed;
-	
+	private int game_mode;
 
 	public DataShip(){}
 	public DataShip(int cmd){this.cmd = cmd;}
@@ -55,4 +56,7 @@ public class DataShip implements Serializable{
 	public void setTotalAdd(int totalAdd) {this.totalAdd = totalAdd;}
 	public int getSpeed() {return speed;}
 	public void setSpeed(int speed) {this.speed = speed;}
+	public int getgame_mode() {return game_mode;}
+	public void setgame_mode(int mode) {this.game_mode = mode;}
+	
 }

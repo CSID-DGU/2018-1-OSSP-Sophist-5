@@ -74,7 +74,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private JButton btnExit = new JButton("나가기");
 	private JCheckBox checkGhost = new JCheckBox("고스트모드",true);
 	private JCheckBox checkGrid  = new JCheckBox("격자 표시",true);
-	private JCheckBox checktimemod = new JCheckBox("타임어택", true);
+	public JCheckBox checktimemod = new JCheckBox("타임어택", true);
 	private Integer[] lv = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 	
 	public JLabel time = new JLabel("60:00");
@@ -167,12 +167,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			public void stateChanged(ChangeEvent arg0) {
 				if(checktimemod.isSelected()) {
 					time.setVisible(true);
-					mode_number = 0; //no item
+					mode_number = 1; // item
 					TetrisBoard.this.setRequestFocusEnabled(true);
 					TetrisBoard.this.repaint();
 				}
-				else {
-					mode_number = 1; // item
+				else if(!checktimemod.isSelected()){
+					mode_number = 0; // no item
 					time.setVisible(false);
 					TetrisBoard.this.setRequestFocusEnabled(true);
 					TetrisBoard.this.repaint();
@@ -211,8 +211,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * 게임을 시작한다.
 	 */
 	
-	public void gameStart(int speed){
+	public void gameStart(int speed, int mode){
 		comboSpeed.setSelectedItem(speed);
+		mode_number = mode;
 		//작업쓰레드가 돌고있다면 (핸들러=클라이언트가 있다면)
 		// isPlas = false, thread.join()을 통해 실행중인 쓰레드를 멈춘다
 		if(th!=null){
@@ -406,6 +407,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		 			start_time_record = start_t;
 		 		}
 		}
+		else {
+			time.setVisible(false);
+		}
 		int countMove = (21-(int)comboSpeed.getSelectedItem())*5; // 
 		//블록을 내려보냄
 		//countMove가 작아질수록 moveDown 실행 
@@ -428,6 +432,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			 */
 			if(tetris.isServer()) {
 				comboSpeed.setEnabled(false);
+				checktimemod.setEnabled(false);
 			}
 			try {
 				Thread.sleep(10);
@@ -468,6 +473,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}//while()
 		if(tetris.isServer()) {
 			comboSpeed.setEnabled(true);
+			checktimemod.setEnabled(true);
 		}
 	}//run()
 		/******************************************************************/
@@ -941,9 +947,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public void actionPerformed(ActionEvent e) { 
 		if(e.getSource() == btnStart){ //if btnStart clicked, start tetris 
 			if(client!=null){
-				client.gameStart((int)comboSpeed.getSelectedItem());
+				client.gameStart((int)comboSpeed.getSelectedItem(), mode_number);
 			}else{			
-				this.gameStart((int)comboSpeed.getSelectedItem());
+				this.gameStart((int)comboSpeed.getSelectedItem(), mode_number);
 			}
 		}else if(e.getSource() == btnExit){
 			//client -> 처음에 isServer=true 

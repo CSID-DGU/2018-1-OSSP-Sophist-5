@@ -92,7 +92,7 @@ public class GameClient implements Runnable{
 			}else if(data.getCommand() == DataShip.SERVER_EXIT){
 				closeNetwork(false);
 			}else if(data.getCommand() == DataShip.GAME_START){
-				reGameStart(data.isPlay(), data.getMsg(), data.getSpeed());
+				reGameStart(data.isPlay(), data.getMsg(), data.getSpeed(), data.getgame_mode());
 			}else if(data.getCommand() == DataShip.ADD_BLOCK){
 				if(isPlay)reAddBlock(data.getMsg(), data.getNumOfBlock(), data.getIndex());
 			}else if(data.getCommand() == DataShip.SET_INDEX){
@@ -107,7 +107,10 @@ public class GameClient implements Runnable{
 			}else if(data.getCommand() == DataShip.GAME_WIN){
 				rePrintSystemMessage(data.getMsg()+"\nTOTAL ADD : "+data.getTotalAdd());
 				tetris.getBoard().setPlay(false);
+			}else if(data.getCommand() == DataShip.GAME_MODE) {
+				tetris.getBoard().mode_number = data.getgame_mode();
 			}
+			
 			
 		}//while(true)
 		
@@ -149,15 +152,16 @@ public class GameClient implements Runnable{
 	}
 	
 	//요청하기 : 게임시작
-	public void gameStart(int speed){
+	public void gameStart(int speed, int mode){
 		DataShip data = new DataShip(DataShip.GAME_START);
 		data.setSpeed(speed);
+		data.setgame_mode(mode);
 		send(data);
 	}
 	//실행하기 : 게임시작
-	public void reGameStart(boolean isPlay, String msg, int speed){
+	public void reGameStart(boolean isPlay, String msg, int speed, int mode){
 		this.isPlay = isPlay;
-		tetris.gameStart(speed);
+		tetris.gameStart(speed, mode);
 		rePrintSystemMessage(msg);
 	}
 	//요청하기 : 메시지

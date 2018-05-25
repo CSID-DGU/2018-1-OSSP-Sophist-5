@@ -77,7 +77,7 @@ class GameHandler extends Thread{
 			}else if(data.getCommand()==DataShip.ADD_BLOCK){
 				addBlock(data.getNumOfBlock());
 			}else if(data.getCommand()==DataShip.GAME_START){
-				gameStart(data.getSpeed());
+				gameStart(data.getSpeed(), data.getgame_mode());
 			}else if(data.getCommand()==DataShip.SET_INDEX){
 				setIndex();
 			}else if(data.getCommand()==DataShip.GAME_OVER){
@@ -132,13 +132,14 @@ class GameHandler extends Thread{
 		broadcast(data);
 	}
 	//응답하기 : 게임시작
-	public void gameStart(int speed){
+	public void gameStart(int speed, int mode){
 		isStartGame = true;
 		totalAdd = 0;
 		maxRank = list.size();
 		DataShip data = new DataShip(DataShip.GAME_START);
 		data.setPlay(true);
 		data.setSpeed(speed);
+		data.setgame_mode(mode);
 		data.setMsg("<Game Start>");
 		broadcast(data);
 		for(int i=0 ; i<list.size() ;i++){
