@@ -117,6 +117,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private int removeLineCount = 0;
 	private int removeLineCombo = 0;
 	
+	public int mode_number = 1;
 	public TetrisBoard(Tetris tetris, GameClient client) {
 		this.tetris = tetris; // 테트리스 받아오고
 		this.client = client; // 클라이언트 받아옴
@@ -166,10 +167,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			public void stateChanged(ChangeEvent arg0) {
 				if(checktimemod.isSelected()) {
 					time.setVisible(true);
+					mode_number = 0; //no item
 					TetrisBoard.this.setRequestFocusEnabled(true);
 					TetrisBoard.this.repaint();
 				}
 				else {
+					mode_number = 1; // item
 					time.setVisible(false);
 					TetrisBoard.this.setRequestFocusEnabled(true);
 					TetrisBoard.this.repaint();
@@ -259,7 +262,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	@Override
 	protected void paintComponent(Graphics g) {
 		//시간추가기능생기면 end_t - start_t + add_time
-		 	if(end_t == 0 && start_t == 0) {
+		if(mode_number == 1) {
+		 	if(end_t == 0 && start_t == 0 ) {
 		 			time.setText("60:00");
 		 	}
 		 	else if((end_t - start_t)/1000 < play_time && 59-(end_t-start_t)/1000 >= 10) {
@@ -272,6 +276,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		 	else {
 		 		time.setText("00:00");
 		 			this.gameEndCallBack();
+		 	}
 		}
 		g.clearRect(0, 0, this.getWidth(), this.getHeight()+1);
 		
@@ -395,10 +400,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 */
 	@Override
 	public void run() {
-		start_t = System.currentTimeMillis();
-		 	if(start_time_record == 0) {
-		 		start_time_record = start_t;
-		 }
+		if(mode_number == 1) {
+			start_t = System.currentTimeMillis();
+		 		if(start_time_record == 0) {
+		 			start_time_record = start_t;
+		 		}
+		}
 		int countMove = (21-(int)comboSpeed.getSelectedItem())*5; // 
 		//블록을 내려보냄
 		//countMove가 작아질수록 moveDown 실행 
@@ -413,7 +420,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		/******************************************************************/
 		/*************************** 게임 ing 상태 **************************/
 		while(isPlay){
-			end_t = System.currentTimeMillis();
+			if(mode_number == 1) {
+				end_t = System.currentTimeMillis();
+			}
 			/*
 				이벤트마다 사운드 추가하기
 			 */
@@ -555,6 +564,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		// drawList 추가
 		for (Block block : shap.getBlock()) { //실질적으로 내리면 그리는 부분
 			blockList.add(block);
+			//test
+			
 			// TetrisBlock 인 shap를 통해 도형을 가져온 뒤에 멥의 블록에 가져온 테트리스블록을 올림.
 		}
 		
@@ -751,6 +762,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * @return 테트리스 블럭
 	 */
 	public TetrisBlock getRandomTetrisBlock(){
+		if(mode_number == 1) {
+			TetrisBlock.MODE_NUM = 1;
+		}
+		else if(mode_number == 0) {
+			TetrisBlock.MODE_NUM = 0;
+		}
 		switch((int)(Math.random()*7)){
 		case TetrisBlock.TYPE_CENTERUP : return new CenterUp(4, 1);
 		case TetrisBlock.TYPE_LEFTTWOUP : return new LeftTwoUp(4, 1);

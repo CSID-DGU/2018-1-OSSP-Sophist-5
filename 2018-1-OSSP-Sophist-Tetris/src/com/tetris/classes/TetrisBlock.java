@@ -31,7 +31,8 @@ public abstract class TetrisBlock {
 	protected Block[] colBlock= new Block[4];		//모양을 나타내는 4개블럭
 	protected int rotation_index;					//블럭회전 모양
 	protected int posX,posY;						//모양의 좌표
-	protected Color color;							//블록색상
+	
+	public Color color;							//블록색상
 	
 	
 	

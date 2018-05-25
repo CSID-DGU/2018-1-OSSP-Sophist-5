@@ -24,14 +24,16 @@ public class Tetris extends JFrame implements ActionListener{
 	private GameServer server;
 	private GameClient client;
 	private TetrisBoard board = new TetrisBoard(this,client);
-	private JMenuItem itemServerStart = new JMenuItem("서버로 접속하기");
-	private JMenuItem itemClientStart = new JMenuItem("클라이언트로 접속하기");
+	public JMenuItem itemServerStart = new JMenuItem("서버로 접속하기");
+	public JMenuItem itemClientStart = new JMenuItem("클라이언트로 접속하기");
 	
 	private boolean isNetwork;
 	private boolean isServer;
-
+	
+	public int check_sc = 0; //0 is unselect
 
 	public Tetris() {
+		
 		JMenuBar mnBar = new JMenuBar();
 		JMenu mnGame = new JMenu("게임하기");
 		
