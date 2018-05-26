@@ -103,7 +103,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	//
 	//
 	// 아이템 테스트 임시 변수
-	private int itemTest;
+	private int Blind_cnt=0;
 	private int maxHeight; //블록 아이템 추가를 위한 높이수를 가져옴 
 	// 아이템 테스트 임시 변수 
 	//
@@ -249,8 +249,6 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		
 		//
 		//
-		// 테스트 변수 초기화
-		this.itemTest = 5;
 		this.maxHeight = 20;
 		// 테스트 변수 초기화 
 		//
@@ -642,63 +640,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			//block의 해당 line을 지운다.
 
 			if (count == maxX) {
-				
-				/*
-				 * *************************
-				 * 아이템 테스트 추가 부분 ************
-				 * *************************
-				 */
-
-				itemTest--;
-				System.out.println("Clear Item" + itemTest);
-				if(itemTest <= 0) { 
-					// 아이템 삭제 조건 추가 부분 
-					// 블록 아이템이 들어가게 될경우 조건문 추가하는 부분 
-					//
-					
-					removeLineCount = maxHeight;
-					// 콜백 함수를 통해 맵을 내린뒤 고정된 블록들 정리 위함 .
-					System.out.println(maxHeight + "," + removeLineCount);
-
-						for (int s = 0; s < blockList.size(); s++) {
-							blockList.remove(s);
-							System.out.print("check remove");
-						}						
-						// 현재 저장된 블록 리스트 삭제 					
-						
-						for (int x = 0 ; x < maxX ; x++ ) {
-							for(int y = 0 ; y < maxY ; y++) {
-								map[y][x] = null;
-							}
-						}
-						// 현재의 멥 초기화 
-						
-						
-					isCombo = false; 
-					// 블록 지우는 것을 콤보로 간주하지 않는다.
-					
-					dropBoard(20, 21-maxHeight);
-					// 21 - maxHeigt : 블록은 바닥이 21좌표, 꼭대기가 1 따라서 현재의 블록의 높이는 좌표상 20-maxHeight
-					// 20번째(바닥에서부터 21-maxHeight까지 멥을 내린다. ( 클리어 )
-					System.out.println("check2");
-				}		
-			
-				
-				
-		
-				/*
-				 * *************************
-				 * 아이템 테스트 추가 부분 ************
-				 * *************************
-				 */
-				
-				// 줄삭제 
-				else {
-					removeLineCount++;
-					this.removeBlockLine(mainBlock.getY());
-					isCombo = true;
-				}
-				
+				removeLineCount++;
+				this.removeBlockLine(mainBlock.getY());
+				isCombo = true;
 			}
 		}
 	
@@ -726,6 +670,26 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * lineNumber 라인을 삭제하고, drawlist에서 제거하고, map을 아래로 내린다.
 	 * @param lineNumber 삭제라인
 	 */
+	//--------------
+	public void clearMap() {
+		if(Blind_cnt == 1) {
+			System.out.println("Clear All");
+			for (int k = 0; k < blockList.size(); k++) {
+				blockList.remove(k);
+			}
+			for (int x = 0 ; x < maxX ; x++ ) {
+				for(int y = 0 ; y < maxY ; y++) {
+					map[y][x] = null;
+				}
+			}
+			dropBoard(20, 21-maxHeight);
+			String path = Tetris.class.getResource("").getPath();
+			String file = new String(path + "Item_Clear.wav");
+			playSound(file, false);
+		}
+		Blind_cnt = 0;
+	}
+	//--------------
 	private void removeBlockLine(int lineNumber) {
 		// 1줄을 지워줌
 		for (int j = 0; j < maxX ; j++) {
@@ -734,8 +698,15 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				if (b == map[lineNumber][j]) {
 					if(map[lineNumber][j].color.equals(new Color(153,0,0))) {
 						System.out.println("아이템터짐");//@@@ 이 부분에 아이템 메소드를 집어넣으면 됩니다.
+						Blind_cnt =1;
+						clearMap();
 					}
-					blockList.remove(s);
+					else {
+						blockList.remove(s);
+						String path = Tetris.class.getResource("").getPath();
+						String file = new String(path + "Block_Exp.wav");
+						playSound(file, false);
+					}
 				}
 			}
 			map[lineNumber][j] = null;
@@ -997,6 +968,7 @@ public void playSound(File file, boolean loop) {
 }
  * 
  */
+	
 	public void playSound(String file, boolean Loop){
 		//사운드재생용메소드
 		//메인 클래스에 추가로 메소드를 하나 더 만들었습니다.
@@ -1013,9 +985,7 @@ public void playSound(File file, boolean loop) {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-	}
-	
-
+	}	
 /* 사운드 추가 */
 
 
