@@ -53,9 +53,9 @@ public class select implements ActionListener
 	      b.setFont(fot);
 	      b.addActionListener(this);
 	      frame.add(IbImage1);
-	      frame.setSize(1200,800);
+	      frame.setSize(500,700);
 	      frame.setVisible(true);
-	      frame.setLocation((550),(100));
+	      frame.setLocation((400),(50));
 		}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -71,6 +71,8 @@ public class select implements ActionListener
 				abc.itemClientStart.doClick();
 
 			}
+			frame.setVisible(false);  
+			frame.dispose();   // 서버선택시 선택프레임 종료
 		}
 	}
 }
