@@ -386,7 +386,6 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}
 
 		if(ghost!=null){
-
 			if(usingGhost){
 				x=0; y=0;
 				x = ghost.getPosX();
@@ -852,6 +851,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
 					blocks.getBlock(i).color = new Color(255,255,50);
 				}
+				else if(tetrisBlock.getBlock(i).color.equals(new Color(255,0,255))) {
+					blocks.getBlock(i).color = new Color(255,0,255);
+				}
 			}
 			break;
 		case TetrisBlock.TYPE_RIGHTUP : 
@@ -859,6 +861,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			for(int i = 0 ; i < tetrisBlock.getBlock().length ; i++) {
 				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
 					blocks.getBlock(i).color = new Color(255,255,50);
+				}
+				else if(tetrisBlock.getBlock(i).color.equals(new Color(255,0,255))) {
+					blocks.getBlock(i).color = new Color(255,0,255);
 				}
 			}
 			break;
@@ -868,6 +873,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
 					blocks.getBlock(i).color = new Color(255,255,50);
 				}
+				else if(tetrisBlock.getBlock(i).color.equals(new Color(255,0,255))) {
+					blocks.getBlock(i).color = new Color(255,0,255);
+				}
 			}
 			break;
 		case TetrisBlock.TYPE_NEMO : 
@@ -875,6 +883,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			for(int i = 0 ; i < tetrisBlock.getBlock().length ; i++) {
 				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
 					blocks.getBlock(i).color = new Color(255,255,50);
+				}
+				else if(tetrisBlock.getBlock(i).color.equals(new Color(255,0,255))) {
+					blocks.getBlock(i).color = new Color(255,0,255);
 				}
 			}
 		break;
