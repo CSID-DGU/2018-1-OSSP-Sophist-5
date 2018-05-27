@@ -63,6 +63,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public static final int PLAY_BLOCK_SET_SOUND = 6;
 	public static final int PLAY_GAME_OVER_SOUND = 7;
 	
+	public TetrisBlock item_block_hold;
+	
 	public static final int BLOCK_SIZE = 20; //20
 	public static final int BOARD_X = 120;
 	public static final int BOARD_Y = 50;
@@ -682,6 +684,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 */
 	public void nextTetrisBlock(){
 		shap = nextBlocks.get(0);
+	
 		this.initController();
 		nextBlocks.remove(0);
 		nextBlocks.add(getRandomTetrisBlock());
@@ -693,6 +696,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		controllerGhost.setBlock(ghost);
 	}
 	
+
 	
 	/**
 	 * lineNumber 라인을 삭제하고, drawlist에서 제거하고, map을 아래로 내린다.
@@ -777,13 +781,27 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			TetrisBlock.MODE_NUM = 0;
 		}
 		switch((int)(Math.random()*7)){
-		case TetrisBlock.TYPE_CENTERUP : return new CenterUp(4, 1);
-		case TetrisBlock.TYPE_LEFTTWOUP : return new LeftTwoUp(4, 1);
-		case TetrisBlock.TYPE_LEFTUP : return new LeftUp(4, 1);
-		case TetrisBlock.TYPE_RIGHTTWOUP : return new RightTwoUp(4, 1);
-		case TetrisBlock.TYPE_RIGHTUP : return new RightUp(4, 1);
-		case TetrisBlock.TYPE_LINE : return new Line(4, 1);
-		case TetrisBlock.TYPE_NEMO : return new Nemo(4, 1);
+			case TetrisBlock.TYPE_CENTERUP : 
+				item_block_hold = new CenterUp(4, 1);
+				return item_block_hold;
+			case TetrisBlock.TYPE_LEFTTWOUP : 
+				item_block_hold = new LeftTwoUp(4,1);
+				return item_block_hold;
+			case TetrisBlock.TYPE_LEFTUP : 
+				item_block_hold = new LeftUp(4,1);
+				return item_block_hold;
+			case TetrisBlock.TYPE_RIGHTTWOUP : 
+				item_block_hold = new RightTwoUp(4,1);
+				return item_block_hold;
+			case TetrisBlock.TYPE_RIGHTUP : 
+				item_block_hold = new RightUp(4,1);
+				return item_block_hold;
+			case TetrisBlock.TYPE_LINE : 
+				item_block_hold = new Line(4,1);
+				return item_block_hold;
+			case TetrisBlock.TYPE_NEMO : 
+				item_block_hold = new Nemo(4,1);
+				return item_block_hold;
 		}
 		return null;
 	}
@@ -798,13 +816,62 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public TetrisBlock getBlockClone(TetrisBlock tetrisBlock, boolean isGhost){
 		TetrisBlock blocks = null;
 		switch(tetrisBlock.getType()){
-		case TetrisBlock.TYPE_CENTERUP : blocks =  new CenterUp(4, 1); break;
-		case TetrisBlock.TYPE_LEFTTWOUP : blocks =  new LeftTwoUp(4, 1); break;
-		case TetrisBlock.TYPE_LEFTUP : blocks =  new LeftUp(4, 1); break;
-		case TetrisBlock.TYPE_RIGHTTWOUP : blocks =  new RightTwoUp(4, 1); break;
-		case TetrisBlock.TYPE_RIGHTUP : blocks =  new RightUp(4, 1); break;
-		case TetrisBlock.TYPE_LINE : blocks =  new Line(4, 1); break;
-		case TetrisBlock.TYPE_NEMO : blocks =  new Nemo(4, 1); break;
+		case TetrisBlock.TYPE_CENTERUP : 
+			blocks =  new CenterUp(4, 1); 
+			for(int i = 0 ; i < tetrisBlock.getBlock().length ; i++) {
+				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
+					blocks.getBlock(i).color = new Color(255,255,50);
+				}
+			}
+			break;
+		case TetrisBlock.TYPE_LEFTTWOUP : 
+			blocks =  new LeftTwoUp(4, 1); 
+			for(int i = 0 ; i < tetrisBlock.getBlock().length ; i++) {
+				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
+					blocks.getBlock(i).color = new Color(255,255,50);
+				}
+			}
+			break;
+		case TetrisBlock.TYPE_LEFTUP : 
+			blocks =  new LeftUp(4, 1); 
+			for(int i = 0 ; i < tetrisBlock.getBlock().length ; i++) {
+				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
+					blocks.getBlock(i).color = new Color(255,255,50);
+				}
+			}
+			break;
+		case TetrisBlock.TYPE_RIGHTTWOUP : 
+			blocks =  new RightTwoUp(4, 1); 
+			for(int i = 0 ; i < tetrisBlock.getBlock().length ; i++) {
+				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
+					blocks.getBlock(i).color = new Color(255,255,50);
+				}
+			}
+			break;
+		case TetrisBlock.TYPE_RIGHTUP : 
+			blocks =  new RightUp(4, 1); 
+			for(int i = 0 ; i < tetrisBlock.getBlock().length ; i++) {
+				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
+					blocks.getBlock(i).color = new Color(255,255,50);
+				}
+			}
+			break;
+		case TetrisBlock.TYPE_LINE : 
+			blocks =  new Line(4, 1); 
+			for(int i = 0 ; i < tetrisBlock.getBlock().length ; i++) {
+				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
+					blocks.getBlock(i).color = new Color(255,255,50);
+				}
+			}
+			break;
+		case TetrisBlock.TYPE_NEMO : 
+			blocks =  new Nemo(4, 1); 
+			for(int i = 0 ; i < tetrisBlock.getBlock().length ; i++) {
+				if(tetrisBlock.getBlock(i).color.equals(new Color(255,255,50))){
+					blocks.getBlock(i).color = new Color(255,255,50);
+				}
+			}
+		break;
 		}
 		//고스트 뷰 
 		if(blocks!=null && isGhost){
@@ -815,6 +882,20 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}
 		return blocks;
 	}	
+	
+	public TetrisBlock getHoldBlockClone(TetrisBlock tetrisBlock) {
+		TetrisBlock blocks = null;
+		switch(tetrisBlock.getType()){
+		case TetrisBlock.TYPE_CENTERUP : blocks =  new CenterUp(4, 1); break;
+		case TetrisBlock.TYPE_LEFTTWOUP : blocks =  new LeftTwoUp(4, 1); break;
+		case TetrisBlock.TYPE_LEFTUP : blocks =  new LeftUp(4, 1); break;
+		case TetrisBlock.TYPE_RIGHTTWOUP : blocks =  new RightTwoUp(4, 1); break;
+		case TetrisBlock.TYPE_RIGHTUP : blocks =  new RightUp(4, 1); break;
+		case TetrisBlock.TYPE_LINE : blocks =  new Line(4, 1); break;
+		case TetrisBlock.TYPE_NEMO : blocks =  new Nemo(4, 1); break;
+		}
+		return blocks;
+	}
 	
 	
 	/**TODO : 콜백메소드
@@ -845,12 +926,15 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			return;
 		
 		if(hold==null){
+			System.out.println("hold Check10");
 			hold = getBlockClone(shap,false);
 			this.nextTetrisBlock();
 		}else{
-			TetrisBlock tmp = getBlockClone(shap,false);
+			System.out.println("hold Check1");
+			TetrisBlock tmp;
+			tmp = getBlockClone(shap,false);
 			shap = getBlockClone(hold,false);
-			hold = getBlockClone(tmp,false);
+			hold = getBlockClone(tmp,false);			
 			this.initController();
 		}
 		
