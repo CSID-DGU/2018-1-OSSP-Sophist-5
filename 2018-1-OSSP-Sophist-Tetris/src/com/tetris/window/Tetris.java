@@ -20,6 +20,8 @@ import com.tetris.network.GameClient;
 import com.tetris.network.GameServer;
 
 public class Tetris extends JFrame implements ActionListener{
+	public static final int PLAY_BGM = 4;
+
 	private static final long serialVersionUID = 1L;
 	private GameServer server;
 	private GameClient client;
@@ -73,7 +75,7 @@ public class Tetris extends JFrame implements ActionListener{
 		});
 	
 
-		board.playSound(4);
+		board.playSound(PLAY_BGM);
 		
 	}
 

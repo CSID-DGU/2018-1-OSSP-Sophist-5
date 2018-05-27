@@ -39,8 +39,8 @@ public abstract class TetrisBlock {
 	
 	public TetrisBlock(int x, int y, Color color, Color ghostColor) {
 		this.color = color;
-		Color item = new Color(153,0,0);
-		int random = (int)(Math.random()*20);//아이템이 나올 확률을 조정.
+		Color item = new Color(255,255,50);
+		int random = (int)(Math.random()*100);//아이템이 나올 확률을 조정.
 		for(int i=0 ; i<colBlock.length ; i++){
 			if(MODE_NUM == 0) {//아이템을 사용할 때
 				if(i == random) {

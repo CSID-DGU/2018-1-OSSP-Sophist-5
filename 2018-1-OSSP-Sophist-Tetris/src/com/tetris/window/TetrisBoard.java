@@ -54,10 +54,14 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public static boolean ITEM_CLEAR_SOUND = false;
 	public static boolean ITEM_BLIND_SOUND = false;
 	public static boolean EXP_SOUND = false;
+
 	public static final int PLAY_ITEM_CLEAR_SOUND = 1;
 	public static final int PLAY_ITEM_BLIND_SOUND = 2;
 	public static final int PLAY_EXP_SOUND = 3;
 	public static final int PLAY_BGM = 4;
+	public static final int PLAY_BLOCK_SPIN_SOUND = 5;
+	public static final int PLAY_BLOCK_SET_SOUND = 6;
+	public static final int PLAY_GAME_OVER_SOUND = 7;
 	
 	public static final int BLOCK_SIZE = 20; //20
 	public static final int BOARD_X = 120;
@@ -127,7 +131,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private int removeLineCount = 0;
 	private int removeLineCombo = 0;
 	
-	public int mode_number = 1;
+	public int mode_number = 1; // 1 : 아이템 x 모드, 0 : 아이템 모드 
+	
 	public TetrisBoard(Tetris tetris, GameClient client) {
 		this.tetris = tetris; // 테트리스 받아오고
 		this.client = client; // 클라이언트 받아옴
@@ -605,6 +610,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			playSound(PLAY_EXP_SOUND);
 		}
 		
+		playSound(PLAY_BLOCK_SET_SOUND);
 		//다음 테트리스 블럭을 가져온다.
 		this.nextTetrisBlock();
 		
@@ -709,6 +715,11 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}
 		Blind_cnt = 0;
 	}
+	
+	public void blindMap() {
+		
+	}
+	
 	//--------------
 	private void removeBlockLine(int lineNumber) {
 		// 1줄을 지워줌
@@ -716,7 +727,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			for (int s = 0; s < blockList.size(); s++) {
 				Block b = blockList.get(s);
 				if (b == map[lineNumber][j]) {
-					if(map[lineNumber][j].color.equals(new Color(153,0,0))) {
+					if(map[lineNumber][j].color.equals(new Color(255,255,50))) {
 						System.out.println("아이템터짐");//@@@ 이 부분에 아이템 메소드를 집어넣으면 됩니다.
 						Blind_cnt =1;
 						clearMap();
@@ -740,6 +751,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public void gameEndCallBack(){
 		client.gameover();
 		this.isPlay = false;
+		playSound(PLAY_GAME_OVER_SOUND);
 	}
 	
 	
@@ -829,7 +841,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * 블럭을 홀드시킨다.
 	 */
 	public void playBlockHold(){
-		if(isHold) return;
+		if(isHold) 
+			return;
 		
 		if(hold==null){
 			hold = getBlockClone(shap,false);
@@ -912,10 +925,11 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}else if(e.getKeyCode() == KeyEvent.VK_UP){
 			controller.nextRotationLeft();
 			controllerGhost.nextRotationLeft();
+			playSound(PLAY_BLOCK_SPIN_SOUND);
 		}else if(e.getKeyCode() == KeyEvent.VK_SPACE){
 			controller.moveQuickDown(shap.getPosY(), true);
 			this.fixingTetrisBlock();
-		}else if(e.getKeyCode() == KeyEvent.VK_SHIFT){ https://github.com/CSID-DGU/2018-1-OSSP-Sophist-5.gitc
+		}else if(e.getKeyCode() == KeyEvent.VK_SHIFT){ 
 			playBlockHold();
 		}
 		this.showGhost();
@@ -1003,13 +1017,25 @@ public void playSound(File file, boolean loop) {
 			break;
 		case PLAY_ITEM_BLIND_SOUND :
 			break;
-		case PLAY_EXP_SOUND:
+		case PLAY_EXP_SOUND :
 			file = new String(path + "Block_Exp.wav");
 			Loop = false;
 			break;
 		case PLAY_BGM :
 			file = new String(path + "BGM.wav");
 			Loop = true;
+			break;
+		case PLAY_BLOCK_SPIN_SOUND :
+			file = new String(path + "Block_Spin.wav");
+			Loop = false;
+			break;
+		case PLAY_BLOCK_SET_SOUND :
+			file = new String(path + "Block_Set.wav");
+			Loop = false;
+			break;
+		case PLAY_GAME_OVER_SOUND :
+			file = new String(path + "Game_Over.wav");
+			Loop = false;
 			break;
 		}
 		

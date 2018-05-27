@@ -94,7 +94,8 @@ public class GameClient implements Runnable{
 			}else if(data.getCommand() == DataShip.GAME_START){
 				reGameStart(data.isPlay(), data.getMsg(), data.getSpeed(), data.getgame_mode());
 			}else if(data.getCommand() == DataShip.ADD_BLOCK){
-				if(isPlay)reAddBlock(data.getMsg(), data.getNumOfBlock(), data.getIndex());
+				if(isPlay)
+					reAddBlock(data.getMsg(), data.getNumOfBlock(), data.getIndex());
 			}else if(data.getCommand() == DataShip.SET_INDEX){
 				reSetIndex(data.getIndex());
 			}else if(data.getCommand() == DataShip.GAME_OVER){
