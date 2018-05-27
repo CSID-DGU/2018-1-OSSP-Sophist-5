@@ -51,6 +51,14 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private Tetris tetris;
 	private GameClient client;
 
+	public static boolean ITEM_CLEAR_SOUND = false;
+	public static boolean ITEM_BLIND_SOUND = false;
+	public static boolean EXP_SOUND = false;
+	public static final int PLAY_ITEM_CLEAR_SOUND = 1;
+	public static final int PLAY_ITEM_BLIND_SOUND = 2;
+	public static final int PLAY_EXP_SOUND = 3;
+	public static final int PLAY_BGM = 4;
+	
 	public static final int BLOCK_SIZE = 20; //20
 	public static final int BOARD_X = 120;
 	public static final int BOARD_Y = 50;
@@ -67,6 +75,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private long start_time_record = 0;
 	private long end_time_record = 0;
 	private long play_time = 60;
+	
+
 	
 	private SystemMessageArea systemMsg = new SystemMessageArea(BLOCK_SIZE*1,BOARD_Y + BLOCK_SIZE + BLOCK_SIZE*9, BLOCK_SIZE*5, BLOCK_SIZE*9);
 	private MessageArea messageArea = new MessageArea(this,2, PANEL_HEIGHT - (MESSAGE_HEIGHT-MESSAGE_X), PANEL_WIDTH-BLOCK_SIZE*7-2, MESSAGE_HEIGHT-2);
@@ -563,6 +573,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			}
 		}
 		
+		ITEM_CLEAR_SOUND = false;
+		ITEM_BLIND_SOUND = false;
+		EXP_SOUND = false;
 		boolean isCombo = false;
 		removeLineCount = 0;
 		
@@ -582,6 +595,15 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		
 		//콜백메소드
 		this.getFixBlockCallBack(blockList,removeLineCombo,removeLineCount);
+		
+		if(ITEM_CLEAR_SOUND && !ITEM_BLIND_SOUND) {
+			playSound(PLAY_ITEM_CLEAR_SOUND);
+		}
+		else if(!ITEM_CLEAR_SOUND && ITEM_BLIND_SOUND) {
+			
+		}else if(!ITEM_CLEAR_SOUND && !ITEM_BLIND_SOUND && EXP_SOUND) {
+			playSound(PLAY_EXP_SOUND);
+		}
 		
 		//다음 테트리스 블럭을 가져온다.
 		this.nextTetrisBlock();
@@ -683,9 +705,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				}
 			}
 			dropBoard(20, 21-maxHeight);
-			String path = Tetris.class.getResource("").getPath();
-			String file = new String(path + "Item_Clear.wav");
-			playSound(file, false);
+			ITEM_CLEAR_SOUND = true;
 		}
 		Blind_cnt = 0;
 	}
@@ -703,9 +723,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					}
 					else {
 						blockList.remove(s);
-						String path = Tetris.class.getResource("").getPath();
-						String file = new String(path + "Block_Exp.wav");
-						playSound(file, false);
+						EXP_SOUND = true;
 					}
 				}
 			}
@@ -969,10 +987,32 @@ public void playSound(File file, boolean loop) {
  * 
  */
 	
-	public void playSound(String file, boolean Loop){
+	public void playSound(int play){
 		//사운드재생용메소드
 		//메인 클래스에 추가로 메소드를 하나 더 만들었습니다.
 		//사운드파일을받아들여해당사운드를재생시킨다.
+		
+		String path = Tetris.class.getResource("").getPath();
+		String file = path;
+		boolean Loop = false;
+		
+		switch(play){
+		case PLAY_ITEM_CLEAR_SOUND :
+			file = new String(path + "Item_Clear.wav");
+			Loop = false;
+			break;
+		case PLAY_ITEM_BLIND_SOUND :
+			break;
+		case PLAY_EXP_SOUND:
+			file = new String(path + "Block_Exp.wav");
+			Loop = false;
+			break;
+		case PLAY_BGM :
+			file = new String(path + "BGM.wav");
+			Loop = true;
+			break;
+		}
+		
 		Clip clip;
 		try {
 			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));

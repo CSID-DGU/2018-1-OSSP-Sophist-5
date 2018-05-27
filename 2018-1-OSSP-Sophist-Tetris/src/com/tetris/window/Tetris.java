@@ -72,9 +72,8 @@ public class Tetris extends JFrame implements ActionListener{
 			
 		});
 	
-		String path = Tetris.class.getResource("").getPath();
-		String file = new String(path + "BGM.wav");
-		board.playSound(file, true);
+
+		board.playSound(4);
 		
 	}
 
