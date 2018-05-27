@@ -607,6 +607,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		EXP_SOUND = false;
 		boolean isCombo = false;
 		isClear = false;
+		isBlind = false;
 //		usingBlind = false;
 		removeLineCount = 0;
 		itemBlindLineNumber = 0;
@@ -645,11 +646,15 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					System.out.println("Clear Item");
 					playSound(PLAY_ITEM_CLEAR_SOUND);
 				}
-				else {
+				else if(itemClearLineIndex > itemBlindLineIndex){
 					blindMap();
 					System.out.println("Blind Item");
 					playSound(PLAY_ITEM_BLIND_SOUND);
 				}
+			}else if( itemClearLineNumber > itemBlindLineNumber) {
+				blindMap();
+				System.out.println("Blind Item");
+				playSound(PLAY_ITEM_BLIND_SOUND);
 			}
 		}else if(isClear) {
 				clearMap();
@@ -797,8 +802,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 						itemBlindLineNumber = lineNumber;
 						itemBlindLineIndex = j;
 						System.out.println("Blind#" + itemBlindLineNumber);
-						if(!isBlind)
-							blindMap();						
+						isBlind = true;
 					}
 					else {
 						blockList.remove(s);

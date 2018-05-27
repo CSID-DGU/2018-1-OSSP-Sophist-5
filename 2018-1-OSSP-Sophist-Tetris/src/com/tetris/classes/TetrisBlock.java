@@ -41,14 +41,14 @@ public abstract class TetrisBlock {
 		this.color = color;
 		Color item = new Color(255,255,50);//Yellow
 		Color item2 = new Color(255, 0, 255);//Pink, 아이템 변수 추가
-		int random = (int)(Math.random()*100);//아이템이 나올 확률을 조정.
+		int random = (int)(Math.random()*150);//아이템이 나올 확률을 조정.
 		for(int i=0 ; i<colBlock.length ; i++){
 			if(MODE_NUM == 0) {//아이템을 사용할 때
 				if(i == random) {
 				colBlock[i] = new Block(0,0,item,ghostColor);
 				}
 				else {
-					if(random >= 50 && random <= 60) {//random 변수가 50-53사이의 수면 item2의 색을 가짐
+					if(random >= 40 && random <= 45) {//random 변수가 50-53사이의 수면 item2의 색을 가짐
 						colBlock[i] = new Block(0, 0, item2, ghostColor);
 						random += 4; //?
 					}
