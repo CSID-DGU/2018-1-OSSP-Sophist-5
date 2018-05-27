@@ -37,7 +37,8 @@ public class select implements ActionListener
     
 	select(){      
 	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      ImageIcon ic = new ImageIcon("C:\\Users\\taegu\\Desktop\\2018-1-OSSP-Sophist-5\\2018-1-OSSP-Sophist-Tetris\\src\\com\\tetris\\window\\tetris.png");
+	      String path = Tetris.class.getResource("").getPath();
+	      ImageIcon ic = new ImageIcon(path + "tetris.png");//상대경로로 변경
 	      JLabel IbImage1 = new JLabel(ic);
 	      
 	      frame.add(new JLabel("CONNECT:"));

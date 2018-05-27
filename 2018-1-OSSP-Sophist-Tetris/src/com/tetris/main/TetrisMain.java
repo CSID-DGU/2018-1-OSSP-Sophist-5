@@ -5,7 +5,7 @@ import com.tetris.main.select;
 
 public class TetrisMain{
 	public static void main(String[] args){
-	//	select t = new select();
+		select t = new select();
 	
 		new Tetris();
 	}

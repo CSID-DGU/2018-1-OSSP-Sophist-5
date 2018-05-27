@@ -119,7 +119,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	//
 	//
 	// 아이템 테스트 임시 변수
-	private int Blind_cnt=0;
+	private int Clear_cnt = 0;
+	private int Blind_cnt = 0;
 	private int maxHeight; //블록 아이템 추가를 위한 높이수를 가져옴 
 	// 아이템 테스트 임시 변수 
 	//
@@ -703,24 +704,24 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * @param lineNumber 삭제라인
 	 */
 	//--------------
-	public void clearMap() {
-		if(Blind_cnt == 1) {
+	public void clearMap() {//클리어 처리를 위한 메소드
+		if(Clear_cnt == 1) {
 			System.out.println("Clear All");
 			for (int k = 0; k < blockList.size(); k++) {
 				blockList.remove(k);
 			}
-			for (int x = 0 ; x < maxX ; x++ ) {
-				for(int y = 0 ; y < maxY ; y++) {
+			for (int y = 0 ; y < maxY ; y++ ) {
+				for(int x = 0 ; x < maxX ; x++) {
 					map[y][x] = null;
 				}
 			}
 			dropBoard(20, 21-maxHeight);
 			ITEM_CLEAR_SOUND = true;
 		}
-		Blind_cnt = 0;
+		Clear_cnt = 0;
 	}
 	
-	public void blindMap() {
+	public void blindMap() {//블라인드 처리를 위한 메소드
 		
 	}
 	
@@ -733,8 +734,13 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				if (b == map[lineNumber][j]) {
 					if(map[lineNumber][j].color.equals(new Color(255,255,50))) {
 						System.out.println("아이템터짐");//@@@ 이 부분에 아이템 메소드를 집어넣으면 됩니다.
-						Blind_cnt =1;
+						Clear_cnt = 1;
 						clearMap();
+					}
+					else if(map[lineNumber][j].color.equals(new Color(255,0,255))) {
+						System.out.println("화면을 가림");
+						Blind_cnt = 1;
+						blindMap();
 					}
 					else {
 						blockList.remove(s);
