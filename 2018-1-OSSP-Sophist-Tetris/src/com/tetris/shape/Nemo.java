@@ -40,22 +40,22 @@ public class Nemo extends TetrisBlock {
 			colBlock[1].setFixGridXY(1,0);
 			break;
 		case ROTATION_90 : 
-			colBlock[2].setFixGridXY(0,-1);
-			colBlock[3].setFixGridXY(1,-1);
-			colBlock[0].setFixGridXY(0,0);
-			colBlock[1].setFixGridXY(1,0);
+			colBlock[0].setFixGridXY(0,-1);
+			colBlock[2].setFixGridXY(1,-1);
+			colBlock[1].setFixGridXY(0,0);
+			colBlock[3].setFixGridXY(1,0);
 			break;
 		case ROTATION_180 : 
-			colBlock[2].setFixGridXY(0,-1);
-			colBlock[3].setFixGridXY(1,-1);
-			colBlock[0].setFixGridXY(0,0);
-			colBlock[1].setFixGridXY(1,0);
+			colBlock[1].setFixGridXY(0,-1);
+			colBlock[0].setFixGridXY(1,-1);
+			colBlock[3].setFixGridXY(0,0);
+			colBlock[2].setFixGridXY(1,0);
 			break;
 		case ROTATION_270 : 
-			colBlock[2].setFixGridXY(0,-1);
-			colBlock[3].setFixGridXY(1,-1);
-			colBlock[0].setFixGridXY(0,0);
-			colBlock[1].setFixGridXY(1,0);
+			colBlock[3].setFixGridXY(0,-1);
+			colBlock[1].setFixGridXY(1,-1);
+			colBlock[2].setFixGridXY(0,0);
+			colBlock[0].setFixGridXY(1,0);
 			break;
 		}//switch
 	}//rotation
