@@ -81,6 +81,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private long start_time_record = 0;
 	private long end_time_record = 0;
 	private long play_time = 60;
+	private long start_blind_time = 0;
+	private long end_blind_time = 0;
 	
 
 	
@@ -129,10 +131,17 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	
 	private boolean isPlay = false;
 	private boolean isHold = false;
+	private boolean isBlind = false;
+	private boolean isClear = false;
+	private boolean usingBlind = false;
 	private boolean usingGhost = true;
 	private boolean usingGrid = true;
 	private int removeLineCount = 0;
 	private int removeLineCombo = 0;
+	private int itemClearLineNumber = 0;
+	private int itemClearLineIndex = 0;
+	private int itemBlindLineNumber = 0;
+	private int itemBlindLineIndex = 0;
 	
 	public int mode_number = 1; // 1 : 아이템 x 모드, 0 : 아이템 모드 
 	
@@ -265,13 +274,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		th = new Thread(this);
 		th.start();
 		
-		//
-		//
+		// 클리어멥 변수 초기화 
 		this.maxHeight = 20;
-		// 테스트 변수 초기화 
-		//
-		//
-		
+
 	}
 	
 	
@@ -316,6 +321,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		g.setFont(new Font("굴림", Font.BOLD,13));
 		g.drawString("속도", PANEL_WIDTH - BLOCK_SIZE*10, 20);
 		g.setFont(font);
+		
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(BOARD_X + BLOCK_SIZE*minX, BOARD_Y, maxX*BLOCK_SIZE+1, maxY*BLOCK_SIZE+1);
@@ -371,43 +377,56 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			}
 		}
 		
-		if(blockList!=null){
-			x=0; y=0;
-			for(int i = 0 ; i<blockList.size() ; i++){
-				Block block = blockList.get(i);
-				x = block.getPosGridX();
-				y = block.getPosGridY();
-				block.setPosGridX(x+minX);
-				block.setPosGridY(y+minY);
-				block.drawColorBlock(g);
-				block.setPosGridX(x);
-				block.setPosGridY(y);
-			}
-		}
-
-		if(ghost!=null){
-			if(usingGhost){
+	
+		
+			if(shap!=null){
 				x=0; y=0;
-				x = ghost.getPosX();
-				y = ghost.getPosY();
-				ghost.setPosX(x+minX);
-				ghost.setPosY(y+minY);
-				ghost.drawBlock(g);
-				ghost.setPosX(x);
-				ghost.setPosY(y);
+				x = shap.getPosX();
+				y = shap.getPosY();
+				shap.setPosX(x+minX);
+				shap.setPosY(y+minY);
+				shap.drawBlock(g);
+				shap.setPosX(x);
+				shap.setPosY(y);
 			}
+			
+			if(blockList!=null){
+				x=0; y=0;
+				for(int i = 0 ; i<blockList.size() ; i++){
+					Block block = blockList.get(i);
+					x = block.getPosGridX();
+					y = block.getPosGridY();
+					block.setPosGridX(x+minX);
+					block.setPosGridY(y+minY);
+					block.drawColorBlock(g);
+					block.setPosGridX(x);
+					block.setPosGridY(y);
+				}
+			}
+
+			if(ghost!=null){
+				if(usingGhost){
+					x=0; y=0;
+					x = ghost.getPosX();
+					y = ghost.getPosY();
+					ghost.setPosX(x+minX);
+					ghost.setPosY(y+minY);
+					ghost.drawBlock(g);
+					ghost.setPosX(x);
+					ghost.setPosY(y);
+				}
+			}
+			
+		if(usingBlind) {
+			end_blind_time = System.currentTimeMillis();
+			g.setColor(new Color(0,0,0));
+			g.fillRect(minX*BLOCK_SIZE*7, minY*BLOCK_SIZE+50, maxX*BLOCK_SIZE+1, maxY*BLOCK_SIZE+1);
+			if((end_blind_time-start_blind_time)/1000 > 3)
+				usingBlind = false;
+			System.out.println("Time Check" + (end_blind_time-start_blind_time )/1000);
 		}
 		
-		if(shap!=null){
-			x=0; y=0;
-			x = shap.getPosX();
-			y = shap.getPosY();
-			shap.setPosX(x+minX);
-			shap.setPosY(y+minY);
-			shap.drawBlock(g);
-			shap.setPosX(x);
-			shap.setPosY(y);
-		}
+
 	}
 	
 	/*
@@ -426,6 +445,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		else {
 			time.setVisible(false);
 		}
+		
+		
+		
 		int countMove = (21-(int)comboSpeed.getSelectedItem())*5; // 
 		//블록을 내려보냄
 		//countMove가 작아질수록 moveDown 실행 
@@ -584,7 +606,13 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		ITEM_BLIND_SOUND = false;
 		EXP_SOUND = false;
 		boolean isCombo = false;
+		isClear = false;
+//		usingBlind = false;
 		removeLineCount = 0;
+		itemBlindLineNumber = 0;
+		itemBlindLineIndex = 0;
+		itemClearLineNumber = 0;
+		itemClearLineIndex = 0;
 		
 		// drawList 추가
 		for (Block block : shap.getBlock()) { //실질적으로 내리면 그리는 부분
@@ -600,17 +628,44 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		if(isCombo) removeLineCombo++;
 		else removeLineCombo = 0;
 		
+		
+		//블록들 여러개 터졌을 경우 처리 
+		if(isClear && isBlind) {
+			if(itemClearLineNumber < itemBlindLineNumber) {
+				blindMap();
+				System.out.println("Blind Item");
+				playSound(PLAY_ITEM_BLIND_SOUND);
+			}else if(itemClearLineNumber < itemBlindLineNumber) {
+				clearMap();
+				System.out.println("Clear Item");
+				playSound(PLAY_ITEM_CLEAR_SOUND);
+			}else if(itemClearLineNumber == itemBlindLineNumber) {
+				if(itemClearLineIndex < itemBlindLineIndex) {
+					clearMap();
+					System.out.println("Clear Item");
+					playSound(PLAY_ITEM_CLEAR_SOUND);
+				}
+				else {
+					blindMap();
+					System.out.println("Blind Item");
+					playSound(PLAY_ITEM_BLIND_SOUND);
+				}
+			}
+		}else if(isClear) {
+				clearMap();
+				playSound(PLAY_ITEM_CLEAR_SOUND);
+		}else if(isBlind) {
+				blindMap();
+				playSound(PLAY_ITEM_BLIND_SOUND);
+		}
+		
+		
+		
 		//콜백메소드
 		this.getFixBlockCallBack(blockList,removeLineCombo,removeLineCount);
 		
-		if(ITEM_CLEAR_SOUND && !ITEM_BLIND_SOUND) {
-			playSound(PLAY_ITEM_CLEAR_SOUND);
-		}
-		else if(!ITEM_CLEAR_SOUND && ITEM_BLIND_SOUND) {
-			
-		}else if(!ITEM_CLEAR_SOUND && !ITEM_BLIND_SOUND && EXP_SOUND) {
+		if( !isBlind && !isClear)
 			playSound(PLAY_EXP_SOUND);
-		}
 		
 		playSound(PLAY_BLOCK_SET_SOUND);
 		//다음 테트리스 블럭을 가져온다.
@@ -704,8 +759,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 */
 	//--------------
 	public void clearMap() {//클리어 처리를 위한 메소드
-		if(Clear_cnt == 1) {
-			System.out.println("Clear All");
+		System.out.println("Clear All");
 			for (int k = 0; k < blockList.size(); k++) {
 				blockList.remove(k);
 			}
@@ -716,12 +770,14 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			}
 			dropBoard(20, 21-maxHeight);
 			ITEM_CLEAR_SOUND = true;
-		}
-		Clear_cnt = 0;
 	}
+
+	
 	
 	public void blindMap() {//블라인드 처리를 위한 메소드
-		
+		start_blind_time = System.currentTimeMillis();
+		usingBlind = true;
+		ITEM_BLIND_SOUND=true;
 	}
 	
 	//--------------
@@ -732,18 +788,22 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				Block b = blockList.get(s);
 				if (b == map[lineNumber][j]) {
 					if(map[lineNumber][j].color.equals(new Color(255,255,50))) {
-						System.out.println("아이템터짐");//@@@ 이 부분에 아이템 메소드를 집어넣으면 됩니다.
-						Clear_cnt = 1;
-						clearMap();
+						itemClearLineNumber = lineNumber;
+						itemClearLineIndex = j;
+						System.out.println("Clear#" + itemClearLineNumber);
+						isClear = true;
 					}
 					else if(map[lineNumber][j].color.equals(new Color(255,0,255))) {
-						System.out.println("화면을 가림");
-						Blind_cnt = 1;
-						blindMap();
+						itemBlindLineNumber = lineNumber;
+						itemBlindLineIndex = j;
+						System.out.println("Blind#" + itemBlindLineNumber);
+						if(!isBlind)
+							blindMap();						
 					}
 					else {
 						blockList.remove(s);
 						EXP_SOUND = true;
+						
 					}
 				}
 			}
@@ -943,11 +1003,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			return;
 		
 		if(hold==null){
-			System.out.println("hold Check10");
 			hold = getBlockClone(shap,false);
 			this.nextTetrisBlock();
 		}else{
-			System.out.println("hold Check1");
 			TetrisBlock tmp;
 			tmp = getBlockClone(shap,false);
 			shap = getBlockClone(hold,false);
@@ -1075,32 +1133,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	}
 	
 	
-/* 
- * ********************************* 블록 이벤트 처리시 사용 가능할 듯 ******************************
- * ********************************* 1회만 재생 ***********************************************
-public void playSound(File file, boolean loop) {
-	try {
-		AudioInputStream ais = AudioSystem.getAudioInputStream(file);
-		AudioFormat af = ais.getFormat();		
-		DataLine.Info info = new DataLine.Info(SourceDataLine.class, af);
-		SourceDataLine sdl = (SourceDataLine)AudioSystem.getLine(info);
-		sdl.open();
-		sdl.start();
-		byte[] buffer = new byte[128000];
-		int i;
-		while(loop) {
-			i=ais.read(buffer, 0, buffer.length);
-			if(i == -1)
-				break;
-			sdl.write(buffer, 0, i);
-		}
-	}catch(Exception e) {
-		e.printStackTrace();
-	}
-	
-}
- * 
- */
+
 	
 	public void playSound(int play){
 		//사운드재생용메소드
