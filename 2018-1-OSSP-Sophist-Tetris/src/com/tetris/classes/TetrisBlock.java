@@ -48,9 +48,9 @@ public abstract class TetrisBlock {
 				colBlock[i] = new Block(0,0,item,ghostColor);
 				}
 				else {
-					if(random >= 40 && random <= 45) {//random 변수가 50-53사이의 수면 item2의 색을 가짐
+					if(random >= 40 && random <= 43) {//random 변수가 50-53사이의 수면 item2의 색을 가짐
 						colBlock[i] = new Block(0, 0, item2, ghostColor);
-						random += 4; //?
+						random += 5; //한 블록에 아이템이 하나만 나오게 하기 위해
 					}
 					else {
 						colBlock[i] = new Block(0,0,color,ghostColor);

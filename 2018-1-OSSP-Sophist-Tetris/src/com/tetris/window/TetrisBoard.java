@@ -14,6 +14,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.*;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -123,6 +124,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	// 아이템 테스트 임시 변수
 	private int Clear_cnt = 0;
 	private int Blind_cnt = 0;
+	public Object Clear_num = 1;//큐에 넣을 데이터의 정보를 구분하기 위해 사용
+	public Object Blind_num = 2;
 	private int maxHeight; //블록 아이템 추가를 위한 높이수를 가져옴 
 	// 아이템 테스트 임시 변수 
 	//
@@ -632,35 +635,35 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		
 		//블록들 여러개 터졌을 경우 처리 
 		if(isClear && isBlind) {
-			if(itemClearLineNumber < itemBlindLineNumber) {
-				blindMap();
+			if(itemClearLineNumber > itemBlindLineNumber) {//블라인드 라인이 더 클 때
+				item_store.offer(Blind_num);//아이템이 터지면 큐에 저장되도록 변경
 				System.out.println("Blind Item");
 				playSound(PLAY_ITEM_BLIND_SOUND);
 			}else if(itemClearLineNumber < itemBlindLineNumber) {
-				clearMap();
+				item_store.offer(Clear_num);
 				System.out.println("Clear Item");
 				playSound(PLAY_ITEM_CLEAR_SOUND);
-			}else if(itemClearLineNumber == itemBlindLineNumber) {
-				if(itemClearLineIndex < itemBlindLineIndex) {
-					clearMap();
+			}else if(itemClearLineNumber == itemBlindLineNumber) {//같은 줄에 있을 때
+				if(itemClearLineIndex < itemBlindLineIndex) {//클리어 인덱스가 더 먼저일 때
+					item_store.offer(Clear_num);
 					System.out.println("Clear Item");
 					playSound(PLAY_ITEM_CLEAR_SOUND);
 				}
-				else if(itemClearLineIndex > itemBlindLineIndex){
-					blindMap();
+				else if(itemClearLineIndex > itemBlindLineIndex){//블라인드 인덱스가 더 먼저일 때
+					item_store.offer(Blind_num);
 					System.out.println("Blind Item");
 					playSound(PLAY_ITEM_BLIND_SOUND);
 				}
-			}else if( itemClearLineNumber > itemBlindLineNumber) {
-				blindMap();
+			}else if( itemClearLineNumber > itemBlindLineNumber) {//클리어 라인이 더 클 때
+				item_store.offer(Blind_num);
 				System.out.println("Blind Item");
 				playSound(PLAY_ITEM_BLIND_SOUND);
 			}
 		}else if(isClear) {
-				clearMap();
+				item_store.offer(Clear_num);
 				playSound(PLAY_ITEM_CLEAR_SOUND);
 		}else if(isBlind) {
-				blindMap();
+				item_store.offer(Blind_num);
 				playSound(PLAY_ITEM_BLIND_SOUND);
 		}
 		
@@ -762,6 +765,18 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * lineNumber 라인을 삭제하고, drawlist에서 제거하고, map을 아래로 내린다.
 	 * @param lineNumber 삭제라인
 	 */
+	//---------------아이템을 저장할 큐의 추가
+	Queue<Object> item_store = new LinkedList();
+	public void useItem() {
+		if(item_store.poll() == Clear_num) {
+			clearMap();
+		}
+		else if(item_store.poll() == Blind_num) {
+			blindMap();
+		}
+	}
+	//
+	
 	//--------------
 	public void clearMap() {//클리어 처리를 위한 메소드
 		System.out.println("Clear All");
@@ -1073,6 +1088,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
+			useItem();//아이템은 ctrl로 사용하면 됩니다
+		}
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			messageArea.requestFocus();
 		}
@@ -1154,6 +1172,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			Loop = false;
 			break;
 		case PLAY_ITEM_BLIND_SOUND :
+			file = new String(path + "Item_Blind.wav");
+			Loop = false;
 			break;
 		case PLAY_EXP_SOUND :
 			file = new String(path + "Block_Exp.wav");
