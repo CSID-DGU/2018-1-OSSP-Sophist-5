@@ -636,34 +636,34 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		//블록들 여러개 터졌을 경우 처리 
 		if(isClear && isBlind) {
 			if(itemClearLineNumber > itemBlindLineNumber) {//블라인드 라인이 더 클 때
-				item_store.offer(Blind_num);//아이템이 터지면 큐에 저장되도록 변경
+				blindMap();
 				System.out.println("Blind Item");
 				playSound(PLAY_ITEM_BLIND_SOUND);
 			}else if(itemClearLineNumber < itemBlindLineNumber) {
-				item_store.offer(Clear_num);
+				clearMap();
 				System.out.println("Clear Item");
 				playSound(PLAY_ITEM_CLEAR_SOUND);
 			}else if(itemClearLineNumber == itemBlindLineNumber) {//같은 줄에 있을 때
 				if(itemClearLineIndex < itemBlindLineIndex) {//클리어 인덱스가 더 먼저일 때
-					item_store.offer(Clear_num);
+					clearMap();
 					System.out.println("Clear Item");
 					playSound(PLAY_ITEM_CLEAR_SOUND);
 				}
 				else if(itemClearLineIndex > itemBlindLineIndex){//블라인드 인덱스가 더 먼저일 때
-					item_store.offer(Blind_num);
+					blindMap();
 					System.out.println("Blind Item");
 					playSound(PLAY_ITEM_BLIND_SOUND);
 				}
 			}else if( itemClearLineNumber > itemBlindLineNumber) {//클리어 라인이 더 클 때
-				item_store.offer(Blind_num);
+				blindMap();
 				System.out.println("Blind Item");
 				playSound(PLAY_ITEM_BLIND_SOUND);
 			}
 		}else if(isClear) {
-				item_store.offer(Clear_num);
+				clearMap();
 				playSound(PLAY_ITEM_CLEAR_SOUND);
 		}else if(isBlind) {
-				item_store.offer(Blind_num);
+				blindMap();
 				playSound(PLAY_ITEM_BLIND_SOUND);
 		}
 		
@@ -766,7 +766,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * @param lineNumber 삭제라인
 	 */
 	//---------------아이템을 저장할 큐의 추가
-	Queue<Object> item_store = new LinkedList();
+	/*Queue<Object> item_store = new LinkedList<Object>();
 	public void useItem() {
 		if(item_store.poll() == Clear_num) {
 			clearMap();
@@ -774,7 +774,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		else if(item_store.poll() == Blind_num) {
 			blindMap();
 		}
-	}
+	}*/
 	//
 	
 	//--------------
@@ -1089,7 +1089,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
-			useItem();//아이템은 ctrl로 사용하면 됩니다
+			//useItem();//아이템은 ctrl로 사용하면 됩니다
 		}
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			messageArea.requestFocus();
