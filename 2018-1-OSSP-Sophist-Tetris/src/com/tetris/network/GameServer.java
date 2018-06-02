@@ -87,6 +87,10 @@ class GameHandler extends Thread{
 				printMessage(data.getMsg());
 			}else if(data.getCommand()==DataShip.PRINT_SYSTEM_MESSAGE){
 				printSystemMessage(data.getMsg());
+			}else if(data.getCommand()==DataShip.ITEM_BLIND) {
+				blindMap();
+			}else if(data.getCommand()==DataShip.ITEM_CLEAR) {
+				clearMessage();
 			}
 			
 		}//while(true)
@@ -172,6 +176,7 @@ class GameHandler extends Thread{
 		data.setMsg(msg);
 		broadcast(data);
 	}
+	
 	//응답하기 : 블럭추가
 	public void addBlock(int numOfBlock){
 		DataShip data = new DataShip(DataShip.ADD_BLOCK);
@@ -179,6 +184,22 @@ class GameHandler extends Thread{
 		data.setMsg(index+"P -> ADD:"+numOfBlock);
 		data.setIndex(index);
 		totalAdd+=numOfBlock;
+		broadcast(data);
+	}
+	
+	//응답하기 : 블라인드 아이템 사용
+	public void blindMap() {
+		DataShip data = new DataShip(DataShip.ITEM_BLIND);
+		data.setMsg(index+"P -> blind");
+		data.setIndex(index);
+		broadcast(data);
+	}
+	
+	
+	public void clearMessage() {
+		DataShip data = new DataShip(DataShip.ITEM_CLEAR);
+		data.setMsg(index+"P -> item Clear");
+		data.setIndex(index);
 		broadcast(data);
 	}
 	//응답하기 : 인덱스주기

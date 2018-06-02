@@ -790,11 +790,17 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			}
 			dropBoard(20, 21-maxHeight);
 			ITEM_CLEAR_SOUND = true;
+			
+			client.clearMessage();
 	}
 
 	
 	
 	public void blindMap() {//블라인드 처리를 위한 메소드
+		client.blindMap();
+	}
+	
+	public void reBlindMap(){
 		start_blind_time = System.currentTimeMillis();
 		usingBlind = true;
 		ITEM_BLIND_SOUND=true;

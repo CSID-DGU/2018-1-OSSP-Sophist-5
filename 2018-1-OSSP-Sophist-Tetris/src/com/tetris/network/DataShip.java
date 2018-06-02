@@ -18,6 +18,8 @@ public class DataShip implements Serializable{
 	public static final int PRINT_SYSTEM_MESSAGE=10;
 	public static final int GAME_WIN=11;
 	public static final int GAME_MODE=12;
+	public static final int ITEM_BLIND=13;
+	public static final int ITEM_CLEAR=14;
 	
 	
 	private int cmd = -1;

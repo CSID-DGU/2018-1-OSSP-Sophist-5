@@ -110,6 +110,12 @@ public class GameClient implements Runnable{
 				tetris.getBoard().setPlay(false);
 			}else if(data.getCommand() == DataShip.GAME_MODE) {
 				tetris.getBoard().mode_number = data.getgame_mode();
+			}else if(data.getCommand() == DataShip.ITEM_BLIND) {
+				if(isPlay)
+					reBlindMap(data.getMsg(), data.getIndex());
+			}else if(data.getCommand() == DataShip.ITEM_CLEAR) {
+				if(isPlay)
+					reClearMessage(data.getMsg(), data.getIndex());
 			}
 			
 			
@@ -183,6 +189,31 @@ public class GameClient implements Runnable{
 		if(index != this.index)tetris.getBoard().addBlockLine(numOfBlock);
 		rePrintSystemMessage(msg);
 	}
+	
+	//
+	//요청하기 : 아이템 블라인드 
+	public void blindMap() {
+		DataShip data = new DataShip(DataShip.ITEM_BLIND);
+		send(data);
+	}
+	
+	//실행하기 : 아이템 블라인드
+	public void reBlindMap(String msg, int index) {
+		if(index != this.index)tetris.getBoard().reBlindMap();
+		rePrintSystemMessage(msg);
+	}
+	//
+	//
+	
+	public void clearMessage() {
+		DataShip data = new DataShip(DataShip.ITEM_CLEAR);
+		send(data);
+	}
+	
+	public void reClearMessage(String msg, int index) {
+		rePrintSystemMessage(msg);
+	}
+	
 	
 	
 	public void setIndex(){
