@@ -38,7 +38,7 @@ public class select implements ActionListener
 	select(){      
 	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	      String path = Tetris.class.getResource("").getPath();
-	      ImageIcon ic = new ImageIcon(path + "tetris.png");//상대경로로 변경
+	      ImageIcon ic = new ImageIcon(path + "tetris_title.gif");//상대경로로 변경//이미지gif로 변경
 	      JLabel IbImage1 = new JLabel(ic);
 	      
 	      frame.add(new JLabel("CONNECT:"));
@@ -53,7 +53,7 @@ public class select implements ActionListener
 	      b.setFont(fot);
 	      b.addActionListener(this);
 	      frame.add(IbImage1);
-	      frame.setSize(500,700);
+	      frame.setSize(650,605);
 	      frame.setVisible(true);
 	      frame.setLocation((400),(50));
 		}
