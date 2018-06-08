@@ -136,10 +136,6 @@ public class GameClient implements Runnable{
 				if(this.index != 4) {
 					tetris.getBoard().setblocklist4(data.getBlock4());
 				}
-			}else if(data.getCommand() == DataShip.BOARD_INFO5) {
-				if(this.index != 5) {
-					tetris.getBoard().setblocklist5(data.getBlock5());
-				}
 			}
 			
 			
@@ -187,13 +183,6 @@ public class GameClient implements Runnable{
 		else if(this.index == 4) {
 			System.out.println("센드4");
 			DataShip data = new DataShip(DataShip.BOARD_INFO4);				
-			data.setBlock1(b_l);
-			System.out.println("b_l의 사이즈는" + b_l.size());
-			send(data);
-		}
-		else if(this.index == 5) {
-			System.out.println("센드5");
-			DataShip data = new DataShip(DataShip.BOARD_INFO5);				
 			data.setBlock1(b_l);
 			System.out.println("b_l의 사이즈는" + b_l.size());
 			send(data);

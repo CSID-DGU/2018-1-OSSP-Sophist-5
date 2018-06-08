@@ -451,7 +451,6 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					if(blockList1 != null) {
 						for(int k = 0; k < blockList1.size(); k++) {
 						Block block2 = blockList1.get(k);
-						
 						block2.drawColorBlock2(g);
 						}
 						System.out.println("11");
