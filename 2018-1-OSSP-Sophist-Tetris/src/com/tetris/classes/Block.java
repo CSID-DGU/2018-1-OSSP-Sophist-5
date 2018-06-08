@@ -50,7 +50,25 @@ public class Block {
 		g.setColor(Color.BLACK);
 		g.drawRect((fixGridX+posGridX)*size+gap + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size+gap + TetrisBoard.BOARD_Y, width-gap*2, height-gap*2);
 	}
-	
+	public void drawColorBlock2(Graphics g){
+		int size = TetrisBoard.BLOCK_SIZE/2;
+		int width = size;
+		int height = size;
+		if(ghost)g.setColor(ghostColor);
+		else g.setColor(color);
+		//칸 테투리그림
+		g.fillRect((fixGridX+posGridX)*size + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size + TetrisBoard.BOARD_Y, width, height);
+		g.setColor(Color.BLACK);
+		g.drawRect((fixGridX+posGridX)*size + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size + TetrisBoard.BOARD_Y, width, height);
+		g.drawLine((fixGridX+posGridX)*size + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size + TetrisBoard.BOARD_Y, (fixGridX+posGridX)*size+width + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size+height + TetrisBoard.BOARD_Y);
+		g.drawLine((fixGridX+posGridX)*size + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size+height + TetrisBoard.BOARD_Y, (fixGridX+posGridX)*size+width + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size + TetrisBoard.BOARD_Y);
+		if(ghost)g.setColor(ghostColor);
+		else g.setColor(color);
+		//네모칸으로 채우기 x대신
+		g.fillRect((fixGridX+posGridX)*size+gap + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size+gap + TetrisBoard.BOARD_Y, width-gap*2, height-gap*2);
+		g.setColor(Color.BLACK);
+		g.drawRect((fixGridX+posGridX)*size+gap + TetrisBoard.BOARD_X, (fixGridY+posGridY)*size+gap + TetrisBoard.BOARD_Y, width-gap*2, height-gap*2);
+	}
 	/**
 	 * 현재 블럭의 절대좌표를 보여준다.
 	 * @return 현재블럭의 X절대좌표

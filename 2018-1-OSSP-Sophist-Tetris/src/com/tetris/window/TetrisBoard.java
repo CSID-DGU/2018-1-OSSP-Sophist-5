@@ -66,8 +66,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	
 	public TetrisBlock item_block_hold;
 	
-	public static final int BLOCK_SIZE = 20; //20
-	public static final int BOARD_X = 120;
+	public static final int BLOCK_SIZE = 30; //20
+	public static final int BOARD_X = 180;
 	public static final int BOARD_Y = 50;
 	private int minX=1, minY=0, maxX=10, maxY=21, down=50, up=0;
 			// maxY = 게임화면 세로길이, maxX = 게임화면 가로 길이 
@@ -75,7 +75,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private final int MESSAGE_X = 2;
 	private final int MESSAGE_WIDTH = BLOCK_SIZE * (7 + minX);
 	private final int MESSAGE_HEIGHT = BLOCK_SIZE * (6 + minY);
-	private final int PANEL_WIDTH = (maxX*BLOCK_SIZE + MESSAGE_WIDTH + BOARD_X);
+	private final int PANEL_WIDTH = (maxX*BLOCK_SIZE + MESSAGE_WIDTH + BOARD_X)*2;
 	private final int PANEL_HEIGHT = (maxY*BLOCK_SIZE + MESSAGE_HEIGHT  + BOARD_Y);
 	
 	private long start_t = 0, end_t = 0;
@@ -88,7 +88,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 
 	
 	private SystemMessageArea systemMsg = new SystemMessageArea(BLOCK_SIZE*1,BOARD_Y + BLOCK_SIZE + BLOCK_SIZE*9, BLOCK_SIZE*5, BLOCK_SIZE*9);
-	private MessageArea messageArea = new MessageArea(this,2, PANEL_HEIGHT - (MESSAGE_HEIGHT-MESSAGE_X), PANEL_WIDTH-BLOCK_SIZE*7-2, MESSAGE_HEIGHT-2);
+	private MessageArea messageArea = new MessageArea(this,2, PANEL_HEIGHT - (MESSAGE_HEIGHT-MESSAGE_X), PANEL_WIDTH/2-BLOCK_SIZE*7-2, MESSAGE_HEIGHT-2);
 	private JButton btnStart = new JButton("시작하기");
 	private JButton btnExit = new JButton("나가기");
 	private JCheckBox checkGhost = new JCheckBox("고스트모드",true);
@@ -116,6 +116,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private TetrisBlock ghost;
 	private TetrisBlock hold;
 	private Block[][] map;
+	private Block[][] map2;
 	private TetrisController controller;
 	private TetrisController controllerGhost;
 	
@@ -157,11 +158,11 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		this.setLayout(null);
 		this.setFocusable(true);
 		
-		btnStart.setBounds(PANEL_WIDTH - BLOCK_SIZE*7, PANEL_HEIGHT - messageArea.getHeight(), BLOCK_SIZE*7, messageArea.getHeight()/2);
+		btnStart.setBounds(PANEL_WIDTH/2 - BLOCK_SIZE*7, PANEL_HEIGHT - messageArea.getHeight(), BLOCK_SIZE*7, messageArea.getHeight()/2);
 		btnStart.setFocusable(false);
 		btnStart.setEnabled(false);
 		btnStart.addActionListener(this);
-		btnExit.setBounds(PANEL_WIDTH - BLOCK_SIZE*7, PANEL_HEIGHT - messageArea.getHeight()/2, BLOCK_SIZE*7, messageArea.getHeight()/2);
+		btnExit.setBounds(PANEL_WIDTH/2 - BLOCK_SIZE*7, PANEL_HEIGHT - messageArea.getHeight()/2, BLOCK_SIZE*7, messageArea.getHeight()/2);
 		btnExit.setFocusable(false);	
 		btnExit.addActionListener(this);
 		checkGhost.setBounds(PANEL_WIDTH - BLOCK_SIZE*7+35,5,95,20);
@@ -254,6 +255,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		/******************************************************************/
 		//맵셋팅
 		map = new Block[maxY][maxX]; //게임화면
+		map2 = new Block[maxY][maxX]; //상대방 화면
 		blockList = new ArrayList<Block>();
 		nextBlocks = new ArrayList<TetrisBlock>();
 		
@@ -307,10 +309,13 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		
 
 		g.setColor(new Color(0,87,102));
-		g.fillRect(0, 0, (maxX+minX+13)*BLOCK_SIZE+1, BOARD_Y);
+	//	g.fillRect(0, 0, (maxX+minX+13)*BLOCK_SIZE+1, BOARD_Y);
+		g.fillRect(0, 0, PANEL_WIDTH, BOARD_Y);
 		
 		g.setColor(new Color(92,109,129));
-		g.fillRect(0, BOARD_Y, (maxX+minX+13)*BLOCK_SIZE+1, maxY*BLOCK_SIZE+1);
+	//	g.fillRect(0, BOARD_Y, (maxX+minX+13)*BLOCK_SIZE+1, maxY*BLOCK_SIZE+1);
+		g.fillRect(0, BOARD_Y, PANEL_WIDTH, maxY*BLOCK_SIZE+1 + messageArea.getHeight());
+		
 		g.setColor(Color.WHITE);
 		
 		//IP 출력
@@ -327,10 +332,23 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		
 		
 		g.setColor(Color.BLACK);
+		
 		g.fillRect(BOARD_X + BLOCK_SIZE*minX, BOARD_Y, maxX*BLOCK_SIZE+1, maxY*BLOCK_SIZE+1);
+		g.drawRect(BOARD_X*4 + BLOCK_SIZE*minX/2, BOARD_Y+45, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
+		g.drawRect(BOARD_X*6 + BLOCK_SIZE*minX/2, BOARD_Y+45, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
+		g.drawRect(BOARD_X*4 + BLOCK_SIZE*minX/2, BOARD_Y*8+65, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
+		g.drawRect(BOARD_X*6 + BLOCK_SIZE*minX/2, BOARD_Y*8+65, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
+		
+		g.fillRect(BOARD_X*5 + BLOCK_SIZE*minX/2, BOARD_Y+60, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/2+1));
+		g.fillRect(BOARD_X*7 + BLOCK_SIZE*minX/2, BOARD_Y+60, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/2+1));
+		g.fillRect(BOARD_X*5 + BLOCK_SIZE*minX/2, BOARD_Y*8 + 80, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/2+1));
+		g.fillRect(BOARD_X*7 + BLOCK_SIZE*minX/2, BOARD_Y*8 + 80, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/2+1));
+		
+		
 		g.fillRect(BLOCK_SIZE*minX ,BOARD_Y + BLOCK_SIZE, BLOCK_SIZE*5,BLOCK_SIZE*5);
 		g.fillRect(BOARD_X + BLOCK_SIZE*minX + (maxX+1)*BLOCK_SIZE+1,BOARD_Y + BLOCK_SIZE, BLOCK_SIZE*5,BLOCK_SIZE*5);
 		g.fillRect(BOARD_X + BLOCK_SIZE*minX + (maxX+1)*BLOCK_SIZE+1,BOARD_Y + BLOCK_SIZE + BLOCK_SIZE*7, BLOCK_SIZE*5,BLOCK_SIZE*12);
+		
 		
 		//HOLD  NEXT 출력
 		g.setFont(new Font(font.getFontName(),font.getStyle(),20));
@@ -402,9 +420,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					block.setPosGridX(x+minX);
 					block.setPosGridY(y+minY);
 					block.drawColorBlock(g);
+					block.drawColorBlock2(g);
 					block.setPosGridX(x);
 					block.setPosGridY(y);
+
 				}
+		        
 			}
 
 			if(ghost!=null){
@@ -427,6 +448,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			if((end_blind_time-start_blind_time)/1000 > 3)
 				usingBlind = false;
 			System.out.println("Time Check" + (end_blind_time-start_blind_time )/1000);
+	
 		}
 		
 
@@ -712,9 +734,10 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			// map에 추가
 			if(mainBlock.getY()<0 || mainBlock.getY() >=maxY) continue;
 			
-			if(mainBlock.getY()<maxY && mainBlock.getX()<maxX) 
+			if(mainBlock.getY()<maxY && mainBlock.getX()<maxX) {
 				map[mainBlock.getY()][mainBlock.getX()] = mainBlock;
-
+				map2[mainBlock.getY()][mainBlock.getX()] = mainBlock;
+			}
 			// 줄이 꽉 찼을 경우. 게임을 종료한다.
 			if (mainBlock.getY() == 1 && mainBlock.getX() > 2 && mainBlock.getX() < 9) {
 			//	end_time_record = System.currentTimeMillis(); 나중에 점수기록할때써먹을 코드
@@ -786,6 +809,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			for (int y = 0 ; y < maxY ; y++ ) {
 				for(int x = 0 ; x < maxX ; x++) {
 					map[y][x] = null;
+
 				}
 			}
 			dropBoard(20, 21-maxHeight);
