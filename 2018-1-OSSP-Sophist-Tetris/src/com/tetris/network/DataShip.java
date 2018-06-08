@@ -41,7 +41,6 @@ public class DataShip implements Serializable{
 	private int speed;
 	private int game_mode;
 	
-	private  ArrayList<Block> send_block_info;
 	
 	private  ArrayList<Block> block_info1;
 	private  ArrayList<Block> block_info2;
@@ -52,8 +51,6 @@ public class DataShip implements Serializable{
 	public DataShip(){}
 	public DataShip(int cmd){this.cmd = cmd;}
 
-	public void set_send_block( ArrayList<Block> list) {this.send_block_info = list;}
-	public ArrayList<Block> get_send_block() {return send_block_info;}
 
 	public void setBlock1( ArrayList<Block> list) {this.block_info1 = list;}
 	public ArrayList<Block> getBlock1() {return block_info1;}
