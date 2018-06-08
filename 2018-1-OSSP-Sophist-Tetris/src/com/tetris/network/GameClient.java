@@ -156,7 +156,28 @@ public class GameClient implements Runnable{
 	
 	
 	
-	
+	public void sendblockinfo() {
+		if(this.index == 1) {
+		DataShip data = new DataShip(DataShip.BOARD_INFO1);		
+		data.setBlock1(tetris.getBoard().blockList);
+		send(data);
+		}
+		else if(this.index == 2) {
+			DataShip data = new DataShip(DataShip.BOARD_INFO2);				
+			data.setBlock1(tetris.getBoard().blockList);
+			send(data);
+		}
+		else if(this.index == 3) {
+			DataShip data = new DataShip(DataShip.BOARD_INFO3);				
+			data.setBlock1(tetris.getBoard().blockList);
+			send(data);
+		}
+		else if(this.index == 4) {
+			DataShip data = new DataShip(DataShip.BOARD_INFO4);				
+			data.setBlock1(tetris.getBoard().blockList);
+			send(data);
+		}
+	}
 	
 	//요청하기 : 연결끊기
 	public void closeNetwork(boolean isServer){

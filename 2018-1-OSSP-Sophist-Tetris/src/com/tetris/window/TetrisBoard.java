@@ -425,17 +425,29 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			
 			if(blockList!=null){
 				x=0; y=0;
+				//여기서 전송
 				for(int i = 0 ; i<blockList.size() ; i++){
 					Block block = blockList.get(i);
+				
+					
 					x = block.getPosGridX();
 					y = block.getPosGridY();
 					block.setPosGridX(x+minX);
 					block.setPosGridY(y+minY);
 					block.drawColorBlock(g);
-					block.drawColorBlock2(g);
+					
+					if(blockList1 != null) {
+						block.drawColorBlock2(g);
+						
+						Block block2 = blockList1.get(i);
+					}
+					/*Block block3 = blockList2.get(i);
+					Block block4 = blockList3.get(i);
+					Block block5 = blockList4.get(i);
+					
 					block.drawColorBlock3(g);
 					block.drawColorBlock4(g);
-					block.drawColorBlock5(g);
+					block.drawColorBlock5(g);*/
 					
 					block.setPosGridX(x);
 					block.setPosGridY(y);
@@ -643,6 +655,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			}
 		}
 		
+		client.sendblockinfo();
 		ITEM_CLEAR_SOUND = false;
 		ITEM_BLIND_SOUND = false;
 		EXP_SOUND = false;

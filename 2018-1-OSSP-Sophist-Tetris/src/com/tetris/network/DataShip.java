@@ -22,7 +22,12 @@ public class DataShip implements Serializable{
 	public static final int GAME_MODE=12;
 	public static final int ITEM_BLIND=13;
 	public static final int ITEM_CLEAR=14;
-	public static final int BOARD_INFO = 15;
+	public static final int BOARD_INFO = 15; //server
+	public static final int BOARD_INFO1 = 16; // cli1 
+	public static final int BOARD_INFO2 = 17; // cli2  
+	public static final int BOARD_INFO3 = 18; // cli3
+	public static final int BOARD_INFO4 = 19; // cli4
+	public static final int BOARD_INFO5 = 19; // cli5
 	
 	private int cmd = -1;
 	private String name;
@@ -36,6 +41,8 @@ public class DataShip implements Serializable{
 	private int speed;
 	private int game_mode;
 	
+	private  ArrayList<Block> send_block_info;
+	
 	private  ArrayList<Block> block_info1;
 	private  ArrayList<Block> block_info2;
 	private  ArrayList<Block> block_info3;
@@ -44,6 +51,9 @@ public class DataShip implements Serializable{
 	
 	public DataShip(){}
 	public DataShip(int cmd){this.cmd = cmd;}
+
+	public void set_send_block( ArrayList<Block> list) {this.send_block_info = list;}
+	public ArrayList<Block> get_send_block() {return send_block_info;}
 
 	public void setBlock1( ArrayList<Block> list) {this.block_info1 = list;}
 	public ArrayList<Block> getBlock1() {return block_info1;}

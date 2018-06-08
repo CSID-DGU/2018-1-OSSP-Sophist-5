@@ -91,6 +91,22 @@ class GameHandler extends Thread{
 				blindMap();
 			}else if(data.getCommand()==DataShip.ITEM_CLEAR) {
 				clearMessage();
+			}else if(data.getCommand()==DataShip.BOARD_INFO1) {
+				DataShip data2 = new DataShip(DataShip.BOARD_INFO1);
+				data2.setBlock2(data.getBlock1());
+				broadcast(data2);				
+			}else if(data.getCommand()==DataShip.BOARD_INFO2) {
+				DataShip data2 = new DataShip(DataShip.BOARD_INFO2);
+				data2.setBlock2(data.getBlock2());
+				broadcast(data2);
+			}else if(data.getCommand()==DataShip.BOARD_INFO3) {
+				DataShip data2 = new DataShip(DataShip.BOARD_INFO3);
+				data2.setBlock2(data.getBlock3());
+				broadcast(data2);
+			}else if(data.getCommand()==DataShip.BOARD_INFO4) {
+				DataShip data2 = new DataShip(DataShip.BOARD_INFO4);
+				data2.setBlock2(data.getBlock4());
+				broadcast(data2);
 			}
 			
 		}//while(true)
