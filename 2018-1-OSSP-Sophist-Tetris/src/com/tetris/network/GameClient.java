@@ -7,7 +7,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.tetris.classes.TetrisBlock;
 import com.tetris.window.Tetris;
+import com.tetris.window.TetrisBoard;
 
 //---------------------[ 클라이언트 ]---------------------
 public class GameClient implements Runnable{
@@ -15,7 +17,7 @@ public class GameClient implements Runnable{
 	private Socket socket;
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
-
+	
 	//서버 IP
 	private String ip;
 	private int port;
@@ -116,6 +118,23 @@ public class GameClient implements Runnable{
 			}else if(data.getCommand() == DataShip.ITEM_CLEAR) {
 				if(isPlay)
 					reClearMessage(data.getMsg(), data.getIndex());
+			}else if(data.getCommand() == DataShip.BOARD_INFO) {
+				if(this.index == 0) {
+					tetris.getBoard().setblocklist(data.getBlock2(), data.getBlock3(), data.getBlock4(), data.getBlock5());
+				}
+				else if(this.index == 1) {
+					tetris.getBoard().setblocklist(data.getBlock1(), data.getBlock3(), data.getBlock4(), data.getBlock5());
+				}
+				else if(this.index == 2) {
+					tetris.getBoard().setblocklist(data.getBlock1(), data.getBlock2(), data.getBlock4(), data.getBlock5());
+				}
+				else if(this.index == 3) {
+					tetris.getBoard().setblocklist(data.getBlock1(), data.getBlock2(), data.getBlock3(), data.getBlock5());
+				}
+				else if(this.index == 4) {
+					tetris.getBoard().setblocklist(data.getBlock1(), data.getBlock2(), data.getBlock3(), data.getBlock4());
+				}
+				
 			}
 			
 			

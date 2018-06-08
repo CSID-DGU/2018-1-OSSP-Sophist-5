@@ -1,6 +1,8 @@
 package com.tetris.network;
 
+import com.tetris.classes.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class DataShip implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -20,7 +22,7 @@ public class DataShip implements Serializable{
 	public static final int GAME_MODE=12;
 	public static final int ITEM_BLIND=13;
 	public static final int ITEM_CLEAR=14;
-	
+	public static final int BOARD_INFO = 15;
 	
 	private int cmd = -1;
 	private String name;
@@ -33,10 +35,26 @@ public class DataShip implements Serializable{
 	private int totalAdd;
 	private int speed;
 	private int game_mode;
-
+	
+	private  ArrayList<Block> block_info1;
+	private  ArrayList<Block> block_info2;
+	private  ArrayList<Block> block_info3;
+	private  ArrayList<Block> block_info4;
+	private  ArrayList<Block> block_info5;
+	
 	public DataShip(){}
 	public DataShip(int cmd){this.cmd = cmd;}
 
+	public void setBlock1( ArrayList<Block> list) {this.block_info1 = list;}
+	public ArrayList<Block> getBlock1() {return block_info1;}
+	public void setBlock2( ArrayList<Block> list) {this.block_info2 = list;}
+	public ArrayList<Block> getBlock2() {return block_info2;}
+	public void setBlock3( ArrayList<Block> list) {this.block_info3 = list;}
+	public ArrayList<Block> getBlock3() {return block_info3;}
+	public void setBlock4( ArrayList<Block> list) {this.block_info4 = list;}
+	public ArrayList<Block> getBlock4() {return block_info4;}
+	public void setBlock5( ArrayList<Block> list) {this.block_info5 = list;}
+	public ArrayList<Block> getBlock5() {return block_info5;}
 	
 	public void setCommand(int type){this.cmd = type;};
 	public int getCommand(){return cmd;}

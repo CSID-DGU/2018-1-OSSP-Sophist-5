@@ -103,7 +103,19 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private int port;
 	private String nickName;
 	private Thread th;
-	private ArrayList<Block> blockList;
+	
+	public ArrayList<Block> blockList;
+	public ArrayList<Block> blockList1;
+	public ArrayList<Block> blockList2;
+	public ArrayList<Block> blockList3;
+	public ArrayList<Block> blockList4;
+	
+	public void setblocklist(ArrayList<Block> data1,ArrayList<Block> data2,ArrayList<Block> data3,ArrayList<Block> data4) {
+		blockList1 = data1;
+		blockList2 = data2;
+		blockList3 = data3;
+		blockList4 = data4;
+	}
 	//
 	//
 	// 아이템 추가 
@@ -421,6 +433,10 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					block.setPosGridY(y+minY);
 					block.drawColorBlock(g);
 					block.drawColorBlock2(g);
+					block.drawColorBlock3(g);
+					block.drawColorBlock4(g);
+					block.drawColorBlock5(g);
+					
 					block.setPosGridX(x);
 					block.setPosGridY(y);
 
