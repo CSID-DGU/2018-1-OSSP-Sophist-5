@@ -878,16 +878,16 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 
 				}
 			}
-			dropBoard(20, 21-maxHeight);
+			dropBoard(20, 100);
 			ITEM_CLEAR_SOUND = true;
 			
-			client.clearMessage();
+			client.clearMessage();//버그확인필요
 	}
 
 	
 	
 	public void blindMap() {//블라인드 처리를 위한 메소드
-		client.blindMap();
+		client.blindMap();//버그 확인 필요
 	}
 	
 	public void reBlindMap(){
@@ -907,12 +907,14 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 						itemClearLineNumber = lineNumber;
 						itemClearLineIndex = j;
 						System.out.println("Clear#" + itemClearLineNumber);
+						blockList.remove(s);
 						isClear = true;
 					}
 					else if(map[lineNumber][j].color.equals(new Color(255,0,255))) {
 						itemBlindLineNumber = lineNumber;
 						itemBlindLineIndex = j;
 						System.out.println("Blind#" + itemBlindLineNumber);
+						blockList.remove(s);
 						isBlind = true;
 					}
 					else {
