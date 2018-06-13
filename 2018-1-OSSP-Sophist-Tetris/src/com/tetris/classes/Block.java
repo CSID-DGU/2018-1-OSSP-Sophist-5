@@ -9,11 +9,11 @@ import com.tetris.window.TetrisBoard;
 public class Block implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private int size = TetrisBoard.BLOCK_SIZE;
-	private int width = size, height = size;
-	private int gap = 3;
-	private int fixGridX, fixGridY;
-	private int posGridX, posGridY;
+	public int size = TetrisBoard.BLOCK_SIZE;
+	public int width = size, height = size;
+	public int gap = 3;
+	public int fixGridX, fixGridY;
+	public int posGridX, posGridY;
 	public Color color;
 	private Color ghostColor;	
 	private boolean ghost;

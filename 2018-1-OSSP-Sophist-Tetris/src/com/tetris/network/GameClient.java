@@ -24,7 +24,7 @@ public class GameClient implements Runnable{
 	private String ip;
 	private int port;
 	private String name;
-	private int index;
+	public int index;
 	private boolean isPlay;
 	
 	//생성자
@@ -122,19 +122,23 @@ public class GameClient implements Runnable{
 					reClearMessage(data.getMsg(), data.getIndex());
 			}else if(data.getCommand() == DataShip.BOARD_INFO1) {
 				if(this.index != 1) {
-					tetris.getBoard().setblocklist1(data.getBlock1());
+					tetris.getBoard().setblocklist1(data.getBlock1(), data.get_map1_info());
 				}
 			}else if(data.getCommand() == DataShip.BOARD_INFO2) {
 				if(this.index != 2) {
-					tetris.getBoard().setblocklist2(data.getBlock2());
+					tetris.getBoard().setblocklist2(data.getBlock2(), data.get_map2_info());
 				}
 			}else if(data.getCommand() == DataShip.BOARD_INFO3) {
 				if(this.index != 3) {
-					tetris.getBoard().setblocklist3(data.getBlock3());
+					tetris.getBoard().setblocklist3(data.getBlock3(), data.get_map3_info());
 				}
 			}else if(data.getCommand() == DataShip.BOARD_INFO4) {
 				if(this.index != 4) {
-					tetris.getBoard().setblocklist4(data.getBlock4());
+					tetris.getBoard().setblocklist4(data.getBlock4(), data.get_map4_info());
+				}
+			}else if(data.getCommand() == DataShip.BOARD_INFO5) {
+				if(this.index != 5) {
+					tetris.getBoard().setblocklist5(data.getBlock5(), data.get_map5_info());
 				}
 			}
 			
@@ -157,34 +161,41 @@ public class GameClient implements Runnable{
 	
 	
 	
-	public void sendblockinfo(ArrayList<Block> b_l) {
-		System.out.println(this.index + "번에서 블락인포보냄");
+	public void sendblockinfo(ArrayList<Block> b_l, Block[][] m) {
+	//	System.out.println(this.index + "번에서 블락인포보냄");
 		if(this.index == 1) {
-			System.out.println("센드1");
+	//		System.out.println("센드1");
 		DataShip data = new DataShip(DataShip.BOARD_INFO1);		
-		data.setBlock1(b_l);
-		System.out.println("b_l의 사이즈는" + b_l.size());	
+		data.setBlock1(b_l); data.set_map1_info(m);
+	//	System.out.println("b_l의 사이즈는" + b_l.size());	
 		send(data);
 		}
 		else if(this.index == 2) {
-			System.out.println("센드2");
+	//		System.out.println("센드2");
 			DataShip data = new DataShip(DataShip.BOARD_INFO2);		
-			data.setBlock1(b_l);
-			System.out.println("b_l의 사이즈는" + b_l.size());
+			data.setBlock2(b_l); data.set_map2_info(m);
+	//		System.out.println("b_l의 사이즈는" + b_l.size());
 			send(data);
 		}
 		else if(this.index == 3) {
-			System.out.println("센드3");
+	//		System.out.println("센드3");
 			DataShip data = new DataShip(DataShip.BOARD_INFO3);				
-			data.setBlock1(b_l);
-			System.out.println("b_l의 사이즈는" + b_l.size());
+			data.setBlock3(b_l);data.set_map3_info(m);
+	//		System.out.println("b_l의 사이즈는" + b_l.size());
 			send(data);
 		}
 		else if(this.index == 4) {
-			System.out.println("센드4");
+	//		System.out.println("센드4");
 			DataShip data = new DataShip(DataShip.BOARD_INFO4);				
-			data.setBlock1(b_l);
-			System.out.println("b_l의 사이즈는" + b_l.size());
+			data.setBlock4(b_l);data.set_map4_info(m);
+	//		System.out.println("b_l의 사이즈는" + b_l.size());
+			send(data);
+		}
+		else if(this.index == 5) {
+	//		System.out.println("센드5");
+			DataShip data = new DataShip(DataShip.BOARD_INFO5);				
+			data.setBlock5(b_l);data.set_map5_info(m);
+	//		System.out.println("b_l의 사이즈는" + b_l.size());
 			send(data);
 		}
 	}

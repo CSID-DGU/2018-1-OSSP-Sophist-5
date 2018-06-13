@@ -94,20 +94,29 @@ class GameHandler extends Thread{
 			}else if(data.getCommand()==DataShip.BOARD_INFO1) {
 				DataShip data2 = new DataShip(DataShip.BOARD_INFO1);
 				data2.setBlock1(data.getBlock1());
-				System.out.println(data.getBlock1().size());
+				data2.set_map1_info(data.get_map1_info());
 				broadcast(data2);				
 			}else if(data.getCommand()==DataShip.BOARD_INFO2) {
 				DataShip data2 = new DataShip(DataShip.BOARD_INFO2);
 				data2.setBlock2(data.getBlock2());
-				System.out.println(data.getBlock2().size());
+				data2.set_map2_info(data.get_map2_info());
 				broadcast(data2);
 			}else if(data.getCommand()==DataShip.BOARD_INFO3) {
 				DataShip data2 = new DataShip(DataShip.BOARD_INFO3);
 				data2.setBlock3(data.getBlock3());
+				data2.set_map3_info(data.get_map3_info());
+
 				broadcast(data2);
 			}else if(data.getCommand()==DataShip.BOARD_INFO4) {
 				DataShip data2 = new DataShip(DataShip.BOARD_INFO4);
 				data2.setBlock4(data.getBlock4());
+				data2.set_map4_info(data.get_map4_info());
+
+				broadcast(data2);
+			}else if(data.getCommand()==DataShip.BOARD_INFO5) {
+				DataShip data2 = new DataShip(DataShip.BOARD_INFO5);
+				data2.setBlock5(data.getBlock5());
+				data2.set_map5_info(data.get_map5_info());
 				broadcast(data2);
 			}
 			

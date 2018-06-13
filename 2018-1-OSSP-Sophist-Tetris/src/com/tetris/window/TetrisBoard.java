@@ -111,25 +111,48 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public ArrayList<Block> blockList4;
 	public ArrayList<Block> blockList5;
 	
-	public void setblocklist1(ArrayList<Block> abc) {
-		blockList1 = abc;
-		System.out.println("setblocklist1실행");	
+	public int pre_pos_y1;
+	public int pre_pos_y2;
+	public int pre_pos_y3;
+	public int pre_pos_y4;
+	public int pre_pos_y5;
+	
+	public int index_num;
+	
+	public void setblocklist1(ArrayList<Block> abc, Block[][] m) {
+			blockList1 = (ArrayList<Block>)abc.clone();
+			if(blockList1.size() == 0) {
+				blockList1.clear();
+			}
+			map1 = m;
 	}
-	public void setblocklist2(ArrayList<Block> abc) {
-		blockList2 = abc;
-		System.out.println("setblocklist2실행");	
+	public void setblocklist2(ArrayList<Block> abc, Block[][] m) {
+		blockList2 = (ArrayList<Block>)abc.clone();
+		if(blockList2.size() == 0) {
+			blockList2.clear();
+		}
+		map2 = m;
 	}
-	public void setblocklist3(ArrayList<Block> abc) {
-		blockList3 = abc;
-		System.out.println("setblocklist3실행");	
+	public void setblocklist3(ArrayList<Block> abc, Block[][] m) {
+		blockList3 = (ArrayList<Block>)abc.clone();
+		if(blockList3.size() == 0) {
+			blockList3.clear();
+		}
+		map3 = m;
 	}
-	public void setblocklist4(ArrayList<Block> abc) {
-		blockList4 = abc;
-		System.out.println("setblocklist4실행");	
+	public void setblocklist4(ArrayList<Block> abc, Block[][] m) {
+		blockList4 = (ArrayList<Block>)abc.clone();
+		if(blockList4.size() == 0) {
+			blockList4.clear();
+		}
+		map4 = m;
 	}
-	public void setblocklist5(ArrayList<Block> abc) {
-		blockList5 = abc;
-		System.out.println("setblocklist5실행");	
+	public void setblocklist5(ArrayList<Block> abc, Block[][] m) {
+		blockList5 = (ArrayList<Block>)abc.clone();
+		if(blockList5.size() == 0) {
+			blockList5.clear();
+		}
+		map5 = m;
 	}
 	//
 	//
@@ -143,6 +166,11 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private TetrisBlock ghost;
 	private TetrisBlock hold;
 	private Block[][] map;
+	private Block[][] map1;
+	private Block[][] map2;
+	private Block[][] map3;
+	private Block[][] map4;
+	private Block[][] map5;
 
 	private TetrisController controller;
 	private TetrisController controllerGhost;
@@ -164,6 +192,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private boolean isHold = false;
 	private boolean isBlind = false;
 	private boolean isClear = false;
+	private boolean isClear2 = false;
+	
 	private boolean usingBlind = false;
 	private boolean usingGhost = true;
 	private boolean usingGrid = true;
@@ -179,11 +209,18 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public TetrisBoard(Tetris tetris, GameClient client) {
 		this.tetris = tetris; // 테트리스 받아오고
 		this.client = client; // 클라이언트 받아옴
+		index_num = 0;
 		this.setPreferredSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));//기본크기
 		this.addKeyListener(this);
 		this.addMouseListener(this);
 		this.setLayout(null);
 		this.setFocusable(true);
+		
+		blockList1 = new ArrayList<Block>();
+		blockList2 = new ArrayList<Block>();
+		blockList3 = new ArrayList<Block>();
+		blockList4 = new ArrayList<Block>();
+		blockList5 = new ArrayList<Block>();
 		
 		btnStart.setBounds(PANEL_WIDTH/2 - BLOCK_SIZE*7, PANEL_HEIGHT - messageArea.getHeight(), BLOCK_SIZE*7, messageArea.getHeight()/2);
 		btnStart.setFocusable(false);
@@ -270,6 +307,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 */
 	
 	public void gameStart(int speed, int mode){
+		index_num = client.index;
 		comboSpeed.setSelectedItem(speed);
 		mode_number = mode;
 		//작업쓰레드가 돌고있다면 (핸들러=클라이언트가 있다면)
@@ -281,10 +319,16 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		/******************************************************************/
 		/******************************************************************/
 		//맵셋팅
+		map1 = new Block[maxY][maxX]; //게임화면
+		map2 = new Block[maxY][maxX]; //게임화면
+		map3 = new Block[maxY][maxX]; //게임화면
+		map4 = new Block[maxY][maxX]; //게임화면
+		map5 = new Block[maxY][maxX]; //게임화면
+		
 		map = new Block[maxY][maxX]; //게임화면
 		blockList = new ArrayList<Block>();
-		nextBlocks = new ArrayList<TetrisBlock>();
 		
+		nextBlocks = new ArrayList<TetrisBlock>();
 		
 		//도형셋팅
 		shap = getRandomTetrisBlock(); // 도형을 받아옴
@@ -441,59 +485,309 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				x=0; y=0;
 				//여기서 전송
 				for(int i = 0 ; i<blockList.size() ; i++){
-					Block block = blockList.get(i);				
+					Block block = blockList.get(i);		
+					//System.out.println(i);
 					x = block.getPosGridX();
 					y = block.getPosGridY();
 					block.setPosGridX(x+minX);
 					block.setPosGridY(y+minY);
 					block.drawColorBlock(g);
-					
-					if(blockList1 != null) {
-						for(int k = 0; k < blockList1.size(); k++) {
-						Block block2 = blockList1.get(k);
-						block2.drawColorBlock2(g);
-						}
-						System.out.println("11");
-					}
-					if(blockList2 != null) {
-						for(int k = 0; k < blockList2.size(); k++) {
-							Block block2 = blockList2.get(k);
-							
-							block2.drawColorBlock2(g);
-							}System.out.println("22");
-					}
-					if(blockList3 != null) {
-						for(int k = 0; k < blockList3.size(); k++) {
-							Block block2 = blockList3.get(k);
-							
-							block2.drawColorBlock2(g);
-							}System.out.println("33");
-					}
-					if(blockList4 != null) {
-						for(int k = 0; k < blockList4.size(); k++) {
-							Block block2 = blockList4.get(k);
-							
-							block2.drawColorBlock2(g);
-							}System.out.println("44");
-					}
-					if(blockList5 != null) {
-						for(int k = 0; k < blockList5.size(); k++) {
-							Block block2 = blockList5.get(k);
-							
-							block2.drawColorBlock2(g);
-							}System.out.println("55");
-					}
-					/*block.drawColorBlock3(g);
-					block.drawColorBlock4(g);
-					block.drawColorBlock5(g);*/
-					
 					block.setPosGridX(x);
 					block.setPosGridY(y);
 
 				}
 		        
 			}
-
+			if(index_num == 1) {
+				if(blockList2 != null) {
+					checkMap2(blockList2, map2);
+					for(int i = 0 ; i<blockList2.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList2.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock2(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList3 != null) {
+					checkMap2(blockList3, map3);
+					for(int i = 0 ; i<blockList3.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList3.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock3(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList4 != null) {
+					checkMap2(blockList4, map4);
+					for(int i = 0 ; i<blockList4.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList4.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock4(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList5 != null) {
+					checkMap2(blockList5, map5);
+					for(int i = 0 ; i<blockList5.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList5.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock5(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+			}
+			else if(index_num == 2) {
+				if(blockList1 != null) {
+					checkMap2(blockList1, map1);
+					for(int i = 0 ; i<blockList1.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList1.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock2(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList3 != null) {
+					checkMap2(blockList3, map3);
+					for(int i = 0 ; i<blockList3.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList3.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock3(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList4 != null) {
+					checkMap2(blockList4, map4);
+					for(int i = 0 ; i<blockList4.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList4.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock4(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList5 != null) {
+					checkMap2(blockList5, map5);
+					for(int i = 0 ; i<blockList5.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList5.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock5(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+			}
+			else if(index_num == 3) {
+				if(blockList1 != null) {
+					checkMap2(blockList1, map1);
+					for(int i = 0 ; i<blockList1.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList1.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock2(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList3 != null) {
+					checkMap2(blockList2, map2);
+					for(int i = 0 ; i<blockList2.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList2.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock3(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList4 != null) {
+					checkMap2(blockList4, map4);
+					for(int i = 0 ; i<blockList4.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList4.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock4(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList5 != null) {
+					checkMap2(blockList5, map5);
+					for(int i = 0 ; i<blockList5.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList5.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock5(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+			}
+			else if(index_num == 4) {
+				if(blockList1 != null) {
+					checkMap2(blockList1, map1);
+					for(int i = 0 ; i<blockList1.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList1.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock2(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList2 != null) {
+					checkMap2(blockList2, map2);
+					for(int i = 0 ; i<blockList2.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList2.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock3(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList3 != null) {
+					checkMap2(blockList3, map3);
+					for(int i = 0 ; i<blockList3.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList3.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock4(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList5 != null) {
+					checkMap2(blockList5, map5);
+					for(int i = 0 ; i<blockList5.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList5.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock5(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+			}
+			else if(index_num == 5) {
+				if(blockList1 != null) {
+					checkMap2(blockList1, map1);
+					for(int i = 0 ; i<blockList1.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList1.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock2(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList2 != null) {
+					checkMap2(blockList2, map2);
+					for(int i = 0 ; i<blockList2.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList2.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock3(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList3 != null) {
+					checkMap2(blockList3, map3);
+					for(int i = 0 ; i<blockList3.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList3.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock4(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+				if(blockList4 != null) {
+					checkMap2(blockList4, map4);
+					for(int i = 0 ; i<blockList4.size() ; i++){
+					int x_= 0; int y_= 0;
+					Block block2 = blockList4.get(i);
+					x_ = block2.getPosGridX();
+					y_ = block2.getPosGridY();
+					block2.setPosGridX(x_+minX/2 + 1);
+					block2.setPosGridY(y_+minY/2);
+					block2.drawColorBlock5(g);				
+					block2.setPosGridX(x_);
+					block2.setPosGridY(y_);
+					}
+				}
+			}
 			if(ghost!=null){
 				if(usingGhost){
 					x=0; y=0;
@@ -553,6 +847,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		/******************************************************************/
 		/*************************** 게임 ing 상태 **************************/
 		while(isPlay){
+
 			if(mode_number == 1) {
 				end_t = System.currentTimeMillis();
 			}
@@ -674,7 +969,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		for(int i=0 ; i<blockList.size() ; i++){
 			y = blockList.get(i).getY();
 			posY = blockList.get(i).getPosGridY();
-			if(y<=lineNumber)blockList.get(i).setPosGridY(posY + num);
+			if(y<=lineNumber) {
+				blockList.get(i).setPosGridY(posY + num);
+			}
 		}
 	}
 
@@ -683,6 +980,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * 테트리스 블럭을 고정시킨다. 
 	 */
 	private void fixingTetrisBlock() {
+		
 		synchronized (this) {
 			if(stop){
 				try {
@@ -705,15 +1003,15 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		itemClearLineNumber = 0;
 		itemClearLineIndex = 0;
 		
-		// drawList 추가
+		// drawList 추가 
 		for (Block block : shap.getBlock()) { //실질적으로 내리면 그리는 부분
 			blockList.add(block);
 			//test
-			
 			// TetrisBlock 인 shap를 통해 도형을 가져온 뒤에 멥의 블록에 가져온 테트리스블록을 올림.
 		}
-		
 		// check
+		client.sendblockinfo(blockList, map);							
+		
 		isCombo = checkMap();
 
 		if(isCombo) removeLineCombo++;
@@ -768,7 +1066,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		
 		//홀드가능상태로 만들어준다.
 		isHold = false;
-		client.sendblockinfo(this.blockList);
+		
 		
 	}//fixingTetrisBlock()
 	
@@ -778,12 +1076,14 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * @return true-지우기성공, false-지우기실패
 	 */
 	private boolean checkMap(){
+		
 		boolean isCombo = false;
 		int count = 0;
 		Block mainBlock;
 		
 		for(int i=0 ; i<blockList.size() ;i++){
 			mainBlock = blockList.get(i);
+			//System.out.println(i);
 			
 			/*
 			 * 
@@ -827,10 +1127,121 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				isCombo = true;
 			}
 		}
-	
+		
 		return isCombo;
 	}
+	private void checkMap2(ArrayList<Block> b_l, Block[][] m){
+		int count = 0;
+		Block mainBlock;		
+		for(int i=0 ; i<b_l.size() ;i++){
+			mainBlock = b_l.get(i);
 	
+			if(maxHeight > mainBlock.getY())
+				maxHeight = mainBlock.getY();			
+
+			if(mainBlock.getY()<0 || mainBlock.getY() >=maxY) continue;
+			
+			if(mainBlock.getY()<maxY && mainBlock.getX()<maxX) {
+				m[mainBlock.getY()][mainBlock.getX()] = mainBlock;
+			}
+			
+			//1줄개수 체크
+			count = 0;
+			for (int j = 0; j < maxX; j++) {
+				if(m[mainBlock.getY()][j] != null) count++;
+				
+			}
+			
+			//block의 해당 line을 지운다.
+
+			if (count == maxX) {
+				this.removeBlockLine2(mainBlock.getY(), b_l, m);
+			}
+			if(isClear2) {
+				b_l.clear();
+				for (int y = 0 ; y < maxY ; y++ ) {
+					for(int x = 0 ; x < maxX ; x++) {
+						m[y][x] = null;
+
+					}
+				}
+				isClear2 = false;
+			}
+		}
+	}
+	public void changeTetrisBlockLine2(int lineNumber, int num, ArrayList<Block> b_l){
+		int y=0, posY=0;
+		for(int i=0 ; i<b_l.size() ; i++){
+			y = b_l.get(i).getY();
+			posY = b_l.get(i).getPosGridY();
+			if(y<=lineNumber) {
+				b_l.get(i).setPosGridY(posY + num);
+			}
+		}
+	}
+	public void removeBlockLine2(int lineNumber, ArrayList<Block> b_l ,Block[][] m) {
+		// 1줄을 지워줌
+		for (int j = 0; j < maxX ; j++) {
+			for (int s = 0; s < b_l.size(); s++) {
+				Block b = b_l.get(s);
+				if (b == m[lineNumber][j]) {
+					if(m[lineNumber][j].color.equals(new Color(255,255,50))) {
+					itemClearLineNumber = lineNumber;
+					itemClearLineIndex = j;
+					b_l.remove(s);
+					isClear2 = true;
+					}
+					else {
+						b_l.remove(s);					
+					}
+				}
+			}
+			m[lineNumber][j] = null;
+
+		}// for(j)
+
+		this.dropBoard2(lineNumber,1, b_l, m);
+	}
+	public void dropBoard2(int lineNumber, int num, ArrayList<Block> b_l, Block[][] m){
+		
+		// 맵을 떨어트린다.
+		this.dropMap2(lineNumber,num, m);
+		
+		//좌표바꿔주기(1만큼증가)
+		this.changeTetrisBlockLine2(lineNumber,num, b_l);
+		
+		//다시 체크하기
+		this.checkMap2(b_l, m);
+		
+	}
+	private void dropMap2(int lineNumber, int num, Block[][] m) {
+		if(num==1){
+			//한줄씩 내리기
+			for(int i= lineNumber ; i>0 ;i--){
+				for(int j=0 ; j<m[i].length ;j++){
+					m[i][j] = m[i-1][j];
+				}
+			}
+			
+			//맨 윗줄은 null로 만들기
+			for(int j=0 ; j<m[0].length ;j++){
+				m[0][j] = null;
+			}
+		}
+		else if(num==-1){
+			//한줄씩 올리기
+			for(int i= 1 ; i<=lineNumber ;i++){
+				for(int j=0 ; j<m[i].length ;j++){
+					m[i-1][j] = m[i][j];
+				}
+			}
+			
+			//removeLine은 null로 만들기
+			for(int j=0 ; j<m[0].length ;j++){
+				m[lineNumber][j] = null;
+			}
+		}
+	}
 	/**
 	 * 테트리스 블럭 리스트에서 테트리스 블럭을 받아온다.
 	 */
@@ -869,16 +1280,15 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	//--------------
 	public void clearMap() {//클리어 처리를 위한 메소드
 		System.out.println("Clear All");
-			for (int k = 0; k < blockList.size(); k++) {
-				blockList.remove(k);
-			}
+
 			for (int y = 0 ; y < maxY ; y++ ) {
 				for(int x = 0 ; x < maxX ; x++) {
 					map[y][x] = null;
 
 				}
 			}
-			dropBoard(20, 100);
+		//	dropBoard(20, 100);
+			blockList = new ArrayList<Block>();		
 			ITEM_CLEAR_SOUND = true;
 			
 			client.clearMessage();//버그확인필요
@@ -920,14 +1330,15 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					else {
 						blockList.remove(s);
 						EXP_SOUND = true;
-						
 					}
 				}
 			}
 			map[lineNumber][j] = null;
+
 		}// for(j)
 
 		this.dropBoard(lineNumber,1);
+		
 	}
 	
 	
@@ -1171,12 +1582,13 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		
 		
 		
-		
 		this.showGhost();
 		this.repaint();
+
 		synchronized (this) {
 			stop = false;
 			this.notify();
+
 		}
 	}
 	

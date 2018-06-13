@@ -27,6 +27,7 @@ public class DataShip implements Serializable{
 	public static final int BOARD_INFO2 = 17; // cli2  
 	public static final int BOARD_INFO3 = 18; // cli3
 	public static final int BOARD_INFO4 = 19; // cli4
+	public static final int BOARD_INFO5 = 20; // cli4
 
 	private int cmd = -1;
 	private String name;
@@ -45,12 +46,25 @@ public class DataShip implements Serializable{
 	private  ArrayList<Block> block_info2;
 	private  ArrayList<Block> block_info3;
 	private  ArrayList<Block> block_info4;
+	private  ArrayList<Block> block_info5;
 	
+	private Block[][] map_info1;
+	private Block[][] map_info2;
+	private Block[][] map_info3;
+	private Block[][] map_info4;
+	private Block[][] map_info5;
+	//21 10
 	public DataShip(){
 		block_info1 = new ArrayList<Block>();
 		block_info2 = new ArrayList<Block>();
 		block_info3 = new ArrayList<Block>();
 		block_info4 = new ArrayList<Block>();
+		block_info5 = new ArrayList<Block>();
+		map_info1 = new Block[21][10];
+		map_info2 = new Block[21][10];
+		map_info3 = new Block[21][10];
+		map_info4 = new Block[21][10];
+		map_info5 = new Block[21][10];
 		
 	}
 	public DataShip(int cmd){this.cmd = cmd;
@@ -58,11 +72,18 @@ public class DataShip implements Serializable{
 	block_info2 = new ArrayList<Block>();
 	block_info3 = new ArrayList<Block>();
 	block_info4 = new ArrayList<Block>();
+	block_info5 = new ArrayList<Block>();
+	
+	map_info1 = new Block[21][10];
+	map_info2 = new Block[21][10];
+	map_info3 = new Block[21][10];
+	map_info4 = new Block[21][10];
+	map_info5 = new Block[21][10];
+	
 	}
 
 
 	public void setBlock1( ArrayList<Block> list) {
-		System.out.println("blocklist의 사이즈는" + list.size());
 		this.block_info1.addAll(list);}
 	public ArrayList<Block> getBlock1() {return block_info1;}
 	public void setBlock2( ArrayList<Block> list) {this.block_info2.addAll(list);}
@@ -71,7 +92,20 @@ public class DataShip implements Serializable{
 	public ArrayList<Block> getBlock3() {return block_info3;}
 	public void setBlock4( ArrayList<Block> list) {this.block_info4.addAll(list);}
 	public ArrayList<Block> getBlock4() {return block_info4;}
+	public void setBlock5( ArrayList<Block> list) {this.block_info5.addAll(list);}
+	public ArrayList<Block> getBlock5() {return block_info5;}
 
+	public void set_map1_info(Block[][] m){ this.map_info1 =  m;}
+	public void set_map2_info(Block[][] m){ this.map_info2 =  m;}
+	public void set_map3_info(Block[][] m){ this.map_info3 =  m;}
+	public void set_map4_info(Block[][] m){ this.map_info4 =  m;}
+	public void set_map5_info(Block[][] m){ this.map_info5 =  m;}
+	
+	public Block[][] get_map1_info() {return map_info1; }
+	public Block[][] get_map2_info() {return map_info2; }
+	public Block[][] get_map3_info() {return map_info3; }
+	public Block[][] get_map4_info() {return map_info4; }
+	public Block[][] get_map5_info() {return map_info5; }
 	
 	public void setCommand(int type){this.cmd = type;};
 	public int getCommand(){return cmd;}
