@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import com.tetris.window.TetrisBoard;
+
 //TODO:--------------------------[ 핸들러 ]--------------------------
 class GameHandler extends Thread{
 
@@ -41,7 +43,7 @@ class GameHandler extends Thread{
 		try{
 			DataShip data = (DataShip)ois.readObject();
 			ip = data.getIp();
-			name = data.getName();			
+			name = data.getName();
 			data = (DataShip)ois.readObject();
 			printSystemOpenMessage();
 			printMessage(ip+":"+name+"님이 입장하였습니다.");

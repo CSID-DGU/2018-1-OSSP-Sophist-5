@@ -37,6 +37,7 @@ import javax.swing.event.ChangeListener;
 import com.tetris.classes.Block;
 import com.tetris.classes.TetrisBlock;
 import com.tetris.controller.TetrisController;
+import com.tetris.network.DataShip;
 import com.tetris.network.GameClient;
 import com.tetris.shape.CenterUp;
 import com.tetris.shape.LeftTwoUp;
@@ -97,6 +98,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private Integer[] lv = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 	
 	public JLabel time = new JLabel("60:00");
+	//사용자 이름 입력
+	public static String name1;
+	public static String name2;
+	public static String name3;
+	public static String name4;
+	public JLabel name = new JLabel(name1);
 	public JComboBox<Integer> comboSpeed = new JComboBox<Integer>(lv);
 	
 	private String ip;
@@ -284,9 +291,13 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		time.setBounds(BLOCK_SIZE*1,BOARD_Y + BLOCK_SIZE + BLOCK_SIZE*6, BLOCK_SIZE*5, BLOCK_SIZE*3);
 		time.setForeground(Color.black);	
 		time.setFont(new Font("Agency FB", Font.BOLD,30));//글씨크기가 커지면 보이지 않을 수 있으니 주의
-		
+		//사용자 이름 위치
+		name.setBounds(BOARD_X*4 + BLOCK_SIZE*minX/2, BOARD_Y+45, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
+		name.setForeground(Color.pink);
+		name.setFont(new Font("Agency FB", Font.BOLD,30));
 		comboSpeed.setBounds(PANEL_WIDTH - BLOCK_SIZE*8, 5, 45, 20);
 		this.add(time);
+		this.add(name);
 		this.add(comboSpeed);
 		this.add(systemMsg);
 		this.add(messageArea);
@@ -1182,7 +1193,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					itemClearLineNumber = lineNumber;
 					itemClearLineIndex = j;
 					b_l.remove(s);
-					isClear2 = true;
+					//isClear2 = true;
 					}
 					else {
 						b_l.remove(s);					
