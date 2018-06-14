@@ -248,6 +248,7 @@ public class GameClient implements Runnable{
 	}
 	public void reAddBlock(String msg, int numOfBlock, int index){
 		if(index != this.index)tetris.getBoard().addBlockLine(numOfBlock);
+
 		rePrintSystemMessage(msg);
 	}
 	

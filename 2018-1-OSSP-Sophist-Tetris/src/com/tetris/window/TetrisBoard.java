@@ -165,12 +165,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private TetrisBlock shap;
 	private TetrisBlock ghost;
 	private TetrisBlock hold;
-	private Block[][] map;
-	private Block[][] map1;
-	private Block[][] map2;
-	private Block[][] map3;
-	private Block[][] map4;
-	private Block[][] map5;
+	public Block[][] map;
+	public Block[][] map1;
+	public Block[][] map2;
+	public Block[][] map3;
+	public Block[][] map4;
+	public Block[][] map5;
 
 	private TetrisController controller;
 	private TetrisController controllerGhost;
@@ -890,6 +890,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				if (countUp == 0) {
 					countUp = up;
 					addBlockLine(1);
+			
 				}
 			}
 			
@@ -1558,6 +1559,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		int rand = (int) (Math.random() * maxX);
 		for (int i = 0; i < numOfLine; i++) {
 			this.dropBoard(maxY - 1, -1);
+	
 			for (int col = 0; col < maxX; col++) {
 				if (col != rand) {
 					block = new Block(0, 0, Color.GRAY, Color.GRAY);
@@ -1581,17 +1583,35 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}
 		
 		
-		
 		this.showGhost();
 		this.repaint();
 
 		synchronized (this) {
 			stop = false;
 			this.notify();
+		}
+	}
+	public void addBlockLine2(int numOfLine, ArrayList<Block> b_l, Block[][] map){
+
+		// 내리기가 있을 때까지 대기한다.
+		// 내리기를 모두 실행한 후 다시 시작한다.
+		Block block;
+		int rand = (int) (Math.random() * maxX);
+		for (int i = 0; i < numOfLine; i++) {
+			this.dropBoard2(maxY - 1, -1, b_l, map);
+	
+			for (int col = 0; col < maxX; col++) {
+				if (col != rand) {
+					block = new Block(0, 0, Color.GRAY, Color.GRAY);
+					block.setPosGridXY(col, maxY - 1);
+					b_l.add(block);
+					map[maxY - 1][col] = block;
+				}
+			}
+			//만약 내려오는 블럭과 겹치면 블럭을 위로 올린다.
 
 		}
 	}
-	
 	
 	
 	//키이벤트 컨트롤
