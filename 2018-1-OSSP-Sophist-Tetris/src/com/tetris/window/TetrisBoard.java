@@ -1183,7 +1183,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					itemClearLineNumber = lineNumber;
 					itemClearLineIndex = j;
 					b_l.remove(s);
-					isClear2 = true;
+				//	isClear2 = true;
 					}
 					else {
 						b_l.remove(s);					

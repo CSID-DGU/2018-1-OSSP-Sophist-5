@@ -248,7 +248,46 @@ public class GameClient implements Runnable{
 	}
 	public void reAddBlock(String msg, int numOfBlock, int index){
 		if(index != this.index)tetris.getBoard().addBlockLine(numOfBlock);
-
+		if(index == 1) {
+			for(int i = 0; i < numOfBlock; i++) {
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList2, tetris.getBoard().map2);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList3, tetris.getBoard().map3);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList4, tetris.getBoard().map4);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList5, tetris.getBoard().map5);
+			}
+		}
+		else if(index == 2) {
+			for(int i = 0; i < numOfBlock; i++) {
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList1, tetris.getBoard().map2);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList3, tetris.getBoard().map3);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList4, tetris.getBoard().map4);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList5, tetris.getBoard().map5);
+			}
+		}
+		else if(index == 3) {
+			for(int i = 0; i < numOfBlock; i++) {
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList1, tetris.getBoard().map2);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList2, tetris.getBoard().map3);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList4, tetris.getBoard().map4);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList5, tetris.getBoard().map5);
+			}
+		}
+		else if(index == 4) {
+			for(int i = 0; i < numOfBlock; i++) {
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList1, tetris.getBoard().map2);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList2, tetris.getBoard().map3);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList3, tetris.getBoard().map4);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList5, tetris.getBoard().map5);
+			}
+		}
+		else if(index == 5) {
+			for(int i = 0; i < numOfBlock; i++) {
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList1, tetris.getBoard().map2);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList2, tetris.getBoard().map3);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList3, tetris.getBoard().map4);
+			tetris.getBoard().dropBoard2(20, -1, tetris.getBoard().blockList4, tetris.getBoard().map5);
+			}
+		}
 		rePrintSystemMessage(msg);
 	}
 	
