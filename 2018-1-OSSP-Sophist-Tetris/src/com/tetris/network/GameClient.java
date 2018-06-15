@@ -118,8 +118,40 @@ public class GameClient implements Runnable{
 				if(isPlay)
 					reBlindMap(data.getMsg(), data.getIndex());
 			}else if(data.getCommand() == DataShip.ITEM_CLEAR) {
-				if(isPlay)
+				if(isPlay) {
 					reClearMessage(data.getMsg(), data.getIndex());
+					if(data.getIndex() == 1) {
+						for (int y = 0 ; y < 21 ; y++ ) {
+							for(int x = 0 ; x < 10 ; x++) {
+								tetris.getBoard().map1[y][x] = null;
+							}
+						}
+					}else if(data.getIndex() == 2) {
+						for (int y = 0 ; y < 21 ; y++ ) {
+							for(int x = 0 ; x < 10 ; x++) {
+								tetris.getBoard().map2[y][x] = null;
+							}
+						}
+					}else if(data.getIndex() == 3) {
+						for (int y = 0 ; y < 21 ; y++ ) {
+							for(int x = 0 ; x < 10 ; x++) {
+								tetris.getBoard().map3[y][x] = null;
+							}
+						}
+					}else if(data.getIndex() == 4) {
+						for (int y = 0 ; y < 21 ; y++ ) {
+							for(int x = 0 ; x < 10 ; x++) {
+								tetris.getBoard().map4[y][x] = null;
+							}
+						}
+					}else if(data.getIndex() == 5) {
+						for (int y = 0 ; y < 21 ; y++ ) {
+							for(int x = 0 ; x < 10 ; x++) {
+								tetris.getBoard().map5[y][x] = null;
+							}
+						}
+					}
+				}
 			}else if(data.getCommand() == DataShip.BOARD_INFO1) {
 				if(this.index != 1) {
 					tetris.getBoard().setblocklist1(data.getBlock1(), data.get_map1_info());
