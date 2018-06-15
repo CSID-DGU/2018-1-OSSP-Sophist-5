@@ -75,7 +75,7 @@ public class Tetris extends JFrame implements ActionListener{
 		});
 	
 
-	//	board.playSound(PLAY_BGM);
+		board.playSound(PLAY_BGM);
 		
 	}
 

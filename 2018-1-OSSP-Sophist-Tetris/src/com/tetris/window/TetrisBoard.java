@@ -99,11 +99,6 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	
 	public JLabel time = new JLabel("60:00");
 	//사용자 이름 입력
-	public static String name1;
-	public static String name2;
-	public static String name3;
-	public static String name4;
-	public JLabel name = new JLabel(name1);
 	public JComboBox<Integer> comboSpeed = new JComboBox<Integer>(lv);
 	
 	private String ip;
@@ -172,12 +167,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private TetrisBlock shap;
 	private TetrisBlock ghost;
 	private TetrisBlock hold;
-	private Block[][] map;
-	private Block[][] map1;
-	private Block[][] map2;
-	private Block[][] map3;
-	private Block[][] map4;
-	private Block[][] map5;
+	public Block[][] map;
+	public Block[][] map1;
+	public Block[][] map2;
+	public Block[][] map3;
+	public Block[][] map4;
+	public Block[][] map5;
 
 	private TetrisController controller;
 	private TetrisController controllerGhost;
@@ -193,11 +188,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private int maxHeight; //블록 아이템 추가를 위한 높이수를 가져옴 
 	// 아이템 테스트 임시 변수 
 	
-	int queueSize = 5;
-	int [] queue = new int[queueSize];
-	int front = 0;
-	int rear = 0;
-	static int DEFAULT_QUEUE_SIZE = 100;
+	int listSize = 5;
+	int [] Itemlist = new int[listSize];
+	int cursor = 0;
 	//
 	//
 	
@@ -292,12 +285,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		time.setForeground(Color.black);	
 		time.setFont(new Font("Agency FB", Font.BOLD,30));//글씨크기가 커지면 보이지 않을 수 있으니 주의
 		//사용자 이름 위치
-		name.setBounds(BOARD_X*4 + BLOCK_SIZE*minX/2, BOARD_Y+45, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
-		name.setForeground(Color.pink);
-		name.setFont(new Font("Agency FB", Font.BOLD,30));
 		comboSpeed.setBounds(PANEL_WIDTH - BLOCK_SIZE*8, 5, 45, 20);
 		this.add(time);
-		this.add(name);
 		this.add(comboSpeed);
 		this.add(systemMsg);
 		this.add(messageArea);
@@ -908,6 +897,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				if (countUp == 0) {
 					countUp = up;
 					addBlockLine(1);
+			
 				}
 			}
 			
@@ -1038,19 +1028,19 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		
 		//블록들 여러개 터졌을 경우 처리 
 		if(isClear && isBlind) {
-			enqueue(Clear_num);
-			enqueue(Blind_num);
+			insert(Clear_num);
+			insert(Blind_num);
 			playSound(PLAY_ITEM_CLEAR_SOUND);
 			playSound(PLAY_ITEM_BLIND_SOUND);
 		}
 		else if(isClear) {
-			enqueue(Clear_num);
+			insert(Clear_num);
 			//clearMap();
 			System.out.println("Clear Item");
 			playSound(PLAY_ITEM_CLEAR_SOUND);
 		}
 		else if(isBlind) {
-			enqueue(Blind_num);
+			insert(Blind_num);
 			//blindMap();
 			System.out.println("Blind Item");
 			playSound(PLAY_ITEM_BLIND_SOUND);
@@ -1193,6 +1183,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					itemClearLineNumber = lineNumber;
 					itemClearLineIndex = j;
 					b_l.remove(s);
+
 					//isClear2 = true;
 					}
 					else {
@@ -1270,52 +1261,34 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * @param lineNumber 삭제라인
 	 */
 	//---------------아이템을 저장할 큐의 추가
-	/*Queue<Object> item_store = new LinkedList<Object>();
-	public void useItem() {
-		if(item_store.poll() == Clear_num) {
-			clearMap();
-		}
-		else if(item_store.poll() == Blind_num) {
-			blindMap();
-		}
-	}*/
 	//
-	private void error(String s){
-		System.err.println(s);
-		System.exit(1);
+	public void insert(int item_num) {
+		if(cursor != 5) {
+			Itemlist[cursor] = item_num;
+			cursor++;
+		}
+		else if(cursor == 5) {
+			Itemlist[cursor-1] = item_num;
+		}
 	}
-	private int next(int a){
-		return ( a+1 ) % queueSize;
-	}
-	public void clear(){
-		front = rear = 0;
-	}
-	public void enqueue(int x){
-		if(next(rear) == front)
-			error("이 이상 큐에 요소를 추가할 수 없습니다.");
-		queue[rear] = x;
-		rear = next(rear);
-	}
-	public int dequeue(){
-		//if(front == rear)
-			//error("큐가 비어있기 때문에 요소를 꺼낼 수 없습니다");
-		int k = queue[front];
-		front = next(front);
-		Item = k;
-		return k;
-	}
-	public boolean isEmpty(){
-		return front == rear;
+	public int delete() {
+		if(cursor <= 0) {
+			return 0;
+		}
+		else {
+			cursor--;
+			return Itemlist[cursor];
+		}
 	}
 	public void useItem() {
-		dequeue();
-		if(Item == Blind_num) {
+		int item_check;
+		item_check = delete();
+		if(item_check == Blind_num) {
 			blindMap();
 		}
-		else if(Item == Clear_num) {
+		else if(item_check == Clear_num) {
 			clearMap();
 		}
-		
 	}
 	//
 	
@@ -1600,6 +1573,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		int rand = (int) (Math.random() * maxX);
 		for (int i = 0; i < numOfLine; i++) {
 			this.dropBoard(maxY - 1, -1);
+	
 			for (int col = 0; col < maxX; col++) {
 				if (col != rand) {
 					block = new Block(0, 0, Color.GRAY, Color.GRAY);
@@ -1623,17 +1597,35 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}
 		
 		
-		
 		this.showGhost();
 		this.repaint();
 
 		synchronized (this) {
 			stop = false;
 			this.notify();
+		}
+	}
+	public void addBlockLine2(int numOfLine, ArrayList<Block> b_l, Block[][] map){
+
+		// 내리기가 있을 때까지 대기한다.
+		// 내리기를 모두 실행한 후 다시 시작한다.
+		Block block;
+		int rand = (int) (Math.random() * maxX);
+		for (int i = 0; i < numOfLine; i++) {
+			this.dropBoard2(maxY - 1, -1, b_l, map);
+	
+			for (int col = 0; col < maxX; col++) {
+				if (col != rand) {
+					block = new Block(0, 0, Color.GRAY, Color.GRAY);
+					block.setPosGridXY(col, maxY - 1);
+					b_l.add(block);
+					map[maxY - 1][col] = block;
+				}
+			}
+			//만약 내려오는 블럭과 겹치면 블럭을 위로 올린다.
 
 		}
 	}
-	
 	
 	
 	//키이벤트 컨트롤
