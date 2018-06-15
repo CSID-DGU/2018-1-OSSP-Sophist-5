@@ -1296,11 +1296,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public void clearMap() {//클리어 처리를 위한 메소드
 		System.out.println("Clear All");
 
-			map = new Block[maxY][maxX];		
 			for (int y = 0 ; y < maxY ; y++ ) {
 				for(int x = 0 ; x < maxX ; x++) {
 					map[y][x] = null;
-
 				}
 			}
 			//dropBoard(20, 100);

@@ -121,30 +121,38 @@ public class GameClient implements Runnable{
 				if(isPlay) {
 					reClearMessage(data.getMsg(), data.getIndex());
 					if(data.getIndex() == 1) {
+						tetris.getBoard().blockList1.clear();
 						for (int y = 0 ; y < 21 ; y++ ) {
 							for(int x = 0 ; x < 10 ; x++) {
 								tetris.getBoard().map1[y][x] = null;
 							}
 						}
 					}else if(data.getIndex() == 2) {
+						tetris.getBoard().blockList2.clear();
+						
 						for (int y = 0 ; y < 21 ; y++ ) {
 							for(int x = 0 ; x < 10 ; x++) {
 								tetris.getBoard().map2[y][x] = null;
 							}
 						}
 					}else if(data.getIndex() == 3) {
+						tetris.getBoard().blockList3.clear();
+						
 						for (int y = 0 ; y < 21 ; y++ ) {
 							for(int x = 0 ; x < 10 ; x++) {
 								tetris.getBoard().map3[y][x] = null;
 							}
 						}
 					}else if(data.getIndex() == 4) {
+						tetris.getBoard().blockList4.clear();
+						
 						for (int y = 0 ; y < 21 ; y++ ) {
 							for(int x = 0 ; x < 10 ; x++) {
 								tetris.getBoard().map4[y][x] = null;
 							}
 						}
 					}else if(data.getIndex() == 5) {
+						tetris.getBoard().blockList5.clear();
 						for (int y = 0 ; y < 21 ; y++ ) {
 							for(int x = 0 ; x < 10 ; x++) {
 								tetris.getBoard().map5[y][x] = null;
