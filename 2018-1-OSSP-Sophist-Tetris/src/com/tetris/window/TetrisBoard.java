@@ -190,7 +190,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	
 	int listSize = 5;
 	int [] Itemlist = new int[listSize];
-	int cursor = 0;
+	int cursor = 1;
 	//
 	//
 	
@@ -317,6 +317,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		index_num = client.index;
 		comboSpeed.setSelectedItem(speed);
 		mode_number = mode;
+		Itemlist[0] = 1;//기본으로 클리어 아이템 하나 추가
 		//작업쓰레드가 돌고있다면 (핸들러=클라이언트가 있다면)
 		// isPlas = false, thread.join()을 통해 실행중인 쓰레드를 멈춘다
 		if(th!=null){
