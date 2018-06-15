@@ -83,6 +83,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	private long start_time_record = 0;
 	private long end_time_record = 0;
 	private long play_time = 60;
+	private long add_time = 0;
 	private long start_blind_time = 0;
 	private long end_blind_time = 0;
 	
@@ -370,11 +371,11 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		 	if(end_t == 0 && start_t == 0 ) {
 		 			time.setText("60:00");
 		 	}
-		 	else if((end_t - start_t)/1000 < play_time && 59-(end_t-start_t)/1000 >= 10) {
-		 		time.setText(Long.toString(59-(end_t - start_t)/1000) + ":" + Long.toString(9-(end_t - start_t)%1000/100) + Long.toString(9-(end_t - start_t)%100/10));
+		 	else if(((end_t - start_t + add_time)/1000)   < play_time && 59-((end_t-start_t + add_time)/1000) >= 10) {
+		 		time.setText(Long.toString(59-(end_t - start_t + add_time)/1000 + add_time) + ":" + Long.toString(9-(end_t - start_t+ add_time)%1000/100) + Long.toString(9-(end_t - start_t+ add_time)%100/10));
 		 	}
-		 	else if((end_t - start_t)/1000 < play_time && 59-(end_t-start_t)/1000 < 10){
-		 		time.setText("0" + Long.toString(59-(end_t - start_t)/1000) + ":" + Long.toString(9-(end_t - start_t)%1000/100) + Long.toString(9-(end_t - start_t)%100/10));
+		 	else if((end_t - start_t + add_time)/1000 < play_time && 59-(end_t-start_t + add_time)/1000 < 10){
+		 		time.setText("0" + Long.toString(59-(end_t - start_t+ add_time)/1000) + ":" + Long.toString(9-(end_t - start_t+ add_time)%1000/100) + Long.toString(9-(end_t - start_t+ add_time)%100/10));
 		 				
 		 	}
 		 	else {
@@ -1117,6 +1118,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 
 			if (count == maxX) {
 				removeLineCount++;
+				add_time += 1;
 				this.removeBlockLine(mainBlock.getY());
 				isCombo = true;
 			}
