@@ -105,13 +105,11 @@ class GameHandler extends Thread{
 				DataShip data2 = new DataShip(DataShip.BOARD_INFO3);
 				data2.setBlock3(data.getBlock3());
 				data2.set_map3_info(data.get_map3_info());
-
 				broadcast(data2);
 			}else if(data.getCommand()==DataShip.BOARD_INFO4) {
 				DataShip data2 = new DataShip(DataShip.BOARD_INFO4);
 				data2.setBlock4(data.getBlock4());
 				data2.set_map4_info(data.get_map4_info());
-
 				broadcast(data2);
 			}else if(data.getCommand()==DataShip.BOARD_INFO5) {
 				DataShip data2 = new DataShip(DataShip.BOARD_INFO5);
