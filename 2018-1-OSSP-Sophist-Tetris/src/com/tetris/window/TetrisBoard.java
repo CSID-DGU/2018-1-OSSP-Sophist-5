@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -26,9 +28,11 @@ import javax.sound.sampled.Line.Info;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.SourceDataLine;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.event.ChangeEvent;
@@ -409,7 +413,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		g.drawString("속도", PANEL_WIDTH - BLOCK_SIZE*10, 20);
 		g.setFont(font);
 		
-		
+		String paath = Tetris.class.getResource("").getPath();
 		g.setColor(Color.BLACK);
 		
 		g.fillRect(BOARD_X + BLOCK_SIZE*minX, BOARD_Y, maxX*BLOCK_SIZE+1, maxY*BLOCK_SIZE+1);
@@ -417,6 +421,17 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		g.drawRect(BOARD_X*6 + BLOCK_SIZE*minX/2, BOARD_Y+45, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
 		g.drawRect(BOARD_X*4 + BLOCK_SIZE*minX/2, BOARD_Y*8+65, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
 		g.drawRect(BOARD_X*6 + BLOCK_SIZE*minX/2, BOARD_Y*8+65, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
+		//사용자 이미지의 추가
+		Image img1 = new ImageIcon(paath + "face1.png").getImage();
+		Image img2 = new ImageIcon(paath + "face2.png").getImage();
+		Image img3 = new ImageIcon(paath + "face3.png").getImage();
+		Image img4 = new ImageIcon(paath + "face4.png").getImage();
+		
+		g.drawImage(img1, BOARD_X*4 + BLOCK_SIZE*minX/2+10, BOARD_Y+200, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/4+1), this);
+		g.drawImage(img2, BOARD_X*4 + BLOCK_SIZE*minX/2+10, BOARD_Y+600, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/4+1), this);
+		g.drawImage(img3, BOARD_X*6 + BLOCK_SIZE*minX/2+10, BOARD_Y+200, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/4+1), this);
+		g.drawImage(img4, BOARD_X*6 + BLOCK_SIZE*minX/2+10, BOARD_Y+600, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/4+1), this);
+		
 		
 		g.fillRect(BOARD_X*5 + BLOCK_SIZE*minX/2, BOARD_Y+60, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/2+1));
 		g.fillRect(BOARD_X*7 + BLOCK_SIZE*minX/2, BOARD_Y+60, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/2+1));
