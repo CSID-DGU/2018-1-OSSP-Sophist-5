@@ -1351,7 +1351,6 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 						itemClearLineIndex = j;
 						System.out.println("Clear#" + itemClearLineNumber);
 						blockList.remove(s);
-						s--;
 						isClear = true;
 					}
 					else if(map[lineNumber][j].color.equals(new Color(255,0,255))) {
@@ -1359,12 +1358,11 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 						itemBlindLineIndex = j;
 						System.out.println("Blind#" + itemBlindLineNumber);
 						blockList.remove(s);
-						s--;
 						isBlind = true;
 					}
 					else {
 						blockList.remove(s);
-						s--;
+						
 						EXP_SOUND = true;
 					}
 				}
