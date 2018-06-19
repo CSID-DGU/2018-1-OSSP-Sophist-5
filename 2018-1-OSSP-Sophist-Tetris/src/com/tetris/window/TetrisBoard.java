@@ -1121,7 +1121,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				map[mainBlock.getY()][mainBlock.getX()] = mainBlock;
 			}
 			// 줄이 꽉 찼을 경우. 게임을 종료한다.
-			if (mainBlock.getY() == 1 && mainBlock.getX() > 2 && mainBlock.getX() < 9) {
+			if (mainBlock.getY() == 1 && mainBlock.getX() > 1 && mainBlock.getX() < 9) {
 			//	end_time_record = System.currentTimeMillis(); 나중에 점수기록할때써먹을 코드
   				this.gameEndCallBack();
  			//	System.out.println((end_time_record - start_time_record)/1000);
@@ -1661,6 +1661,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
 			useItem();//아이템은 ctrl로 사용하면 됩니다
 		}
+		if(e.getKeyCode() == KeyEvent.VK_ALT) {
+			clearMap();//테스트용 키
+		}
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			messageArea.requestFocus();
 		}
@@ -1708,7 +1711,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				blockList3.clear();
 				blockList4.clear();
 				blockList5.clear();
-				add_time = 0;
+				add_time = 0; 
 				
 			}else{			
 				this.gameStart((int)comboSpeed.getSelectedItem(), mode_number);
@@ -1723,6 +1726,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			if(client!=null ){
 				if(tetris.isNetwork()){//연결이 되있는 상태라면 
 					client.closeNetwork(tetris.isServer());
+					System.exit(0);	
 				}
 			}else{
 				System.exit(0);
