@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.*;
 
@@ -422,10 +423,14 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		g.drawRect(BOARD_X*4 + BLOCK_SIZE*minX/2, BOARD_Y*8+65, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
 		g.drawRect(BOARD_X*6 + BLOCK_SIZE*minX/2, BOARD_Y*8+65, maxX*BLOCK_SIZE+31, (maxY*BLOCK_SIZE/2+1)+30);
 		//사용자 이미지의 추가
-		Image img1 = new ImageIcon(paath + "face1.png").getImage();
-		Image img2 = new ImageIcon(paath + "face2.png").getImage();
-		Image img3 = new ImageIcon(paath + "face3.png").getImage();
-		Image img4 = new ImageIcon(paath + "face4.png").getImage();
+		URL url1 = getClass().getClassLoader().getResource("face1.png");
+		URL url2 = getClass().getClassLoader().getResource("face2.png");
+		URL url3 = getClass().getClassLoader().getResource("face3.png");
+		URL url4 = getClass().getClassLoader().getResource("face4.png");
+		Image img1 = new ImageIcon(url1).getImage();
+		Image img2 = new ImageIcon(url2).getImage();
+		Image img3 = new ImageIcon(url3).getImage();
+		Image img4 = new ImageIcon(url4).getImage();
 		
 		g.drawImage(img1, BOARD_X*4 + BLOCK_SIZE*minX/2+10, BOARD_Y+200, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/4+1), this);
 		g.drawImage(img2, BOARD_X*4 + BLOCK_SIZE*minX/2+10, BOARD_Y+600, maxX*BLOCK_SIZE/2+1, (maxY*BLOCK_SIZE/4+1), this);
@@ -1726,43 +1731,50 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		//사운드파일을받아들여해당사운드를재생시킨다.
 		
 		String path = Tetris.class.getResource("").getPath();
-		String file = path;
+		URL file = null;
+		URL sound1 = getClass().getClassLoader().getResource("Item_Clear.wav");
+		URL sound2 = getClass().getClassLoader().getResource("Item_Blind.wav");
+		URL sound3 = getClass().getClassLoader().getResource("Block_Exp.wav");
+		URL sound4 = getClass().getClassLoader().getResource("BGM.wav");
+		URL sound5 = getClass().getClassLoader().getResource("Block_Spin.wav");
+		URL sound6 = getClass().getClassLoader().getResource("Block_Set.wav");
+		URL sound7 = getClass().getClassLoader().getResource("Game_Over.wav");
 		boolean Loop = false;
 		
 		switch(play){
 		case PLAY_ITEM_CLEAR_SOUND :
-			file = new String(path + "Item_Clear.wav");
+			file = sound1;
 			Loop = false;
 			break;
 		case PLAY_ITEM_BLIND_SOUND :
-			file = new String(path + "Item_Blind.wav");
+			file = sound2;
 			Loop = false;
 			break;
 		case PLAY_EXP_SOUND :
-			file = new String(path + "Block_Exp.wav");
+			file = sound3;
 			Loop = false;
 			break;
 		case PLAY_BGM :
-			file = new String(path + "BGM.wav");
+			file = sound4;
 			Loop = true;
 			break;
 		case PLAY_BLOCK_SPIN_SOUND :
-			file = new String(path + "Block_Spin.wav");
+			file = sound5;
 			Loop = false;
 			break;
 		case PLAY_BLOCK_SET_SOUND :
-			file = new String(path + "Block_Set.wav");
+			file = sound6;
 			Loop = false;
 			break;
 		case PLAY_GAME_OVER_SOUND :
-			file = new String(path + "Game_Over.wav");
+			file = sound7;
 			Loop = false;
 			break;
 		}
 		
 		Clip clip;
 		try {
-			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
+			AudioInputStream ais = AudioSystem.getAudioInputStream(file); 
 			clip = AudioSystem.getClip();
 			clip.open(ais);
 			clip.start();

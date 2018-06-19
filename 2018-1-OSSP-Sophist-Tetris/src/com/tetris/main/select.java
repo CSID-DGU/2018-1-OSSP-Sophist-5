@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,7 +39,9 @@ public class select implements ActionListener
 	select(){      
 	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	      String path = Tetris.class.getResource("").getPath();
-	      ImageIcon ic = new ImageIcon(path + "tetris_title.gif");//상대경로로 변경//이미지gif로 변경
+	      URL url = getClass().getClassLoader().getResource("tetris_title.gif");
+	      ImageIcon ic = new ImageIcon(url);
+	      //ImageIcon ic = new ImageIcon(path + "tetris_title.gif");//상대경로로 변경//이미지gif로 변경
 	      JLabel IbImage1 = new JLabel(ic);
 	      
 	      frame.add(new JLabel("CONNECT:"));
