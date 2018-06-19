@@ -69,6 +69,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	public static final int PLAY_BLOCK_SPIN_SOUND = 5;
 	public static final int PLAY_BLOCK_SET_SOUND = 6;
 	public static final int PLAY_GAME_OVER_SOUND = 7;
+	public static final int PLAY_ITEM_EAT_SOUND = 8;
 	
 	public TetrisBlock item_block_hold;
 	
@@ -836,7 +837,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			g.fillRect(minX*BLOCK_SIZE*7, minY*BLOCK_SIZE+50, maxX*BLOCK_SIZE+1, maxY*BLOCK_SIZE+1);
 			if((end_blind_time-start_blind_time)/1000 > 3)
 				usingBlind = false;
-			System.out.println("Time Check" + (end_blind_time-start_blind_time )/1000);
+			//System.out.println("Time Check" + (end_blind_time-start_blind_time )/1000);
 	
 		}
 		
@@ -1052,20 +1053,19 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		if(isClear && isBlind) {
 			insert(Clear_num);
 			insert(Blind_num);
-			playSound(PLAY_ITEM_CLEAR_SOUND);
-			playSound(PLAY_ITEM_BLIND_SOUND);
+			playSound(PLAY_ITEM_EAT_SOUND);
 		}
 		else if(isClear) {
 			insert(Clear_num);
 			//clearMap();
-			System.out.println("Clear Item");
-			playSound(PLAY_ITEM_CLEAR_SOUND);
+			//System.out.println("Clear Item");
+			playSound(PLAY_ITEM_EAT_SOUND);
 		}
 		else if(isBlind) {
 			insert(Blind_num);
 			//blindMap();
-			System.out.println("Blind Item");
-			playSound(PLAY_ITEM_BLIND_SOUND);
+			//System.out.println("Blind Item");
+			playSound(PLAY_ITEM_EAT_SOUND);
 		}
 		
 		
@@ -1308,16 +1308,18 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		item_check = delete();
 		if(item_check == Blind_num) {
 			blindMap();
+			playSound(PLAY_ITEM_BLIND_SOUND);
 		}
 		else if(item_check == Clear_num) {
 			clearMap();
+			playSound(PLAY_ITEM_CLEAR_SOUND);
 		}
 	}
 	//
 	
 	//--------------
 	public void clearMap() {//클리어 처리를 위한 메소드
-		System.out.println("Clear All");
+	//	System.out.println("Clear All");
 
 			for (int y = 0 ; y < maxY ; y++ ) {
 				for(int x = 0 ; x < maxX ; x++) {
@@ -1354,14 +1356,14 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					if(map[lineNumber][j].color.equals(new Color(255,255,50))) {
 						itemClearLineNumber = lineNumber;
 						itemClearLineIndex = j;
-						System.out.println("Clear#" + itemClearLineNumber);
+						//System.out.println("Clear#" + itemClearLineNumber);
 						blockList.remove(s);
 						isClear = true;
 					}
 					else if(map[lineNumber][j].color.equals(new Color(255,0,255))) {
 						itemBlindLineNumber = lineNumber;
 						itemBlindLineIndex = j;
-						System.out.println("Blind#" + itemBlindLineNumber);
+						//System.out.println("Blind#" + itemBlindLineNumber);
 						blockList.remove(s);
 						isBlind = true;
 					}
@@ -1701,6 +1703,13 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		if(e.getSource() == btnStart){ //if btnStart clicked, start tetris 
 			if(client!=null){
 				client.gameStart((int)comboSpeed.getSelectedItem(), mode_number);
+				blockList1.clear();
+				blockList2.clear();
+				blockList3.clear();
+				blockList4.clear();
+				blockList5.clear();
+				add_time = 0;
+				
 			}else{			
 				this.gameStart((int)comboSpeed.getSelectedItem(), mode_number);
 			}
@@ -1739,6 +1748,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		URL sound5 = getClass().getClassLoader().getResource("Block_Spin.wav");
 		URL sound6 = getClass().getClassLoader().getResource("Block_Set.wav");
 		URL sound7 = getClass().getClassLoader().getResource("Game_Over.wav");
+		URL sound8 = getClass().getClassLoader().getResource("Item_noname.wav");
 		boolean Loop = false;
 		
 		switch(play){
@@ -1768,6 +1778,10 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			break;
 		case PLAY_GAME_OVER_SOUND :
 			file = sound7;
+			Loop = false;
+			break;
+		case PLAY_ITEM_EAT_SOUND :
+			file = sound8;
 			Loop = false;
 			break;
 		}
