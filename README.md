@@ -4,6 +4,8 @@
 
 - You need to use JRE system library [JavaSE-1.8] for executing this project
 
+- Executable(.exe) file updated.
+
 original source code : https://github.com/PSNB92/Tetris
 
 Sophist(2018-1-OSSP Project)
